@@ -14,10 +14,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
+    <script>
+    var MyApp = {
+        csrfToken: "{{ csrf_token() }}"
+    }
+</script>
 </head>
 <body class="hold-transition sidebar-mini">
   <!-- Site wrapper -->
-  <div id="app">
+  <div id="app">  
   </div>
   <!-- Scripts -->
   <script src="{{ asset('js/app.js') }}" defer></script>

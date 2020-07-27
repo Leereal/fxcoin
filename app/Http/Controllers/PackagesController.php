@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Resources\PackageResource;
 class PackagesController extends Controller
 {
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,8 +39,7 @@ class PackagesController extends Controller
     {
         $request->validate([
             'name'           => 'required|max:255|unique:packages,name',
-            'minimum'        => 'required|max:10|between:0,99.99',
-            'interest'       => 'required|max:10|between:0,99.99',
+            'minimum'        => 'required|max:10|between:0,99.99',            
             'daily_interest' => 'required|max:10|between:0,99.99',
             'period'         => 'required|max:1000|integer',
         ]);
@@ -38,11 +47,11 @@ class PackagesController extends Controller
         $package->id             = $request->input('id');
         $package->name           = $request->input('name');
         $package->minimum        = $request->input('minimum');
-        $package->interest       = $request->input('interest');
+        $package->interest       = $request->input('daily_interest')*$request->input('period');
         $package->daily_interest = $request->input('daily_interest');
         $package->period         = $request->input('period');    
         if($package->save()){
-            return new PackageResource($package);
+            return ['message'=>'Saved Successfully'];
         }    
     }
 
@@ -70,8 +79,7 @@ class PackagesController extends Controller
     {
         $request->validate([
             'name'           => 'required|max:255|unique:packages,name'.$packages->id,
-            'minimum'        => 'required|max:255|between:0,99.99',
-            'interest'       => 'required|max:20|between:0,99.99',
+            'minimum'        => 'required|max:255|between:0,99.99',            
             'daily_interest' => 'required|max:10|between:0,99.99',
             'period'         => 'required|max:1000|integer',
         ]);
@@ -79,11 +87,11 @@ class PackagesController extends Controller
         $package->id             = $request->input('id');
         $package->name           = $request->input('name');
         $package->minimum        = $request->input('minimum');
-        $package->interest       = $request->input('interest');
+        $package->interest       = $request->input('daily_interest')*$request->input('period');
         $package->daily_interest = $request->input('daily_interest');
         $package->period         = $request->input('period');      
         if($package->save()){
-            return new PackageResource($package);
+            return ['message'=>'Saved Successfully'];
         }  
     }
 

@@ -1,18 +1,14 @@
 <template>
 
 <!-- Site wrapper -->
-<div class="wrapper">
-    <Header/>
-    <Sidebar/>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">    
-        <router-view></router-view> 
+    <div class="wrapper">
+        <Header/>
+        <Sidebar/>    
+        <router-view></router-view>
+        <Footer/>
     </div>
-    <!-- /.content-wrapper -->
 
-    <Footer/>
-</div>
 </template>
 
 <script>

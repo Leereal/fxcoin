@@ -19,7 +19,8 @@ class PaymentDetailResource extends JsonResource
             'id'=> $this->id,
             'account_number'=> $this->account_number, 
             'ipAddress'=> $this->ipAddress,  
-            'username'=> $this->user->name,           
+            'first_name'=> $this->user->name,
+            'surname'=> $this->user->surname,           
             'payment_method'=> $this->payment_method->name,            
         ];
     }
