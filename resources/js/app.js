@@ -1,21 +1,27 @@
+import App from './App.vue';
+import Vuex from 'vuex';
+import router from './router';
+import Swal from 'sweetalert2';
+import { Form, HasError, AlertError } from 'vform';
+import StoreData from './store/store';
+import {initialize} from './helpers/general';
+
 require('./bootstrap');
 
 window.Vue = require('vue');
-
-import Swal from 'sweetalert2';
-
 window.Swal = Swal;
-
-import { Form, HasError, AlertError } from 'vform';
-Vue.component(HasError.name, HasError)
-Vue.component(AlertError.name, AlertError)
 window.Form = Form;
 
-import App from './App.vue';
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 
-import router from './router';
+const store = new Vuex.Store(StoreData);
+
+initialize(store, router);
+
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(App)
 });

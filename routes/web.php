@@ -3,10 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 
-Auth::routes();
+//Auth::routes();
 
-// Route::get('/', function () {
-//     return view('welcome');
-//  });
+Route::get('/', function () {
+    return view('home');
+ });
 
 Route::get('/{any}', 'HomeController@index')->where('any','.*');

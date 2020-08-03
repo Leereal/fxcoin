@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> We don't need it since we are using API Passport-->
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -13,12 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
-    <script>
-    var MyApp = {
-        csrfToken: "{{ csrf_token() }}"
-    }
-</script>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">   
 </head>
 <body class="hold-transition sidebar-mini">
   <!-- Site wrapper -->

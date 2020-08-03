@@ -105,27 +105,18 @@
                                 Payment Details
                             </p>
                         </router-link>
-                    </li>
+                    </li>                  
                     <li class="nav-item">
                         <a
-                            href="/logout"
+                            href=""
                             class="nav-link"
-                            onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();"
+                            @click.prevent="logout"                            
                         >
                             <i class="nav-icon fas fa-power-off text-red"></i>
                             <p>
                                 Logout
                             </p>
-                        </a>
-                        <form
-                            id="logout-form"
-                            action="/logout"
-                            method="POST"
-                            style="display: none;"
-                        >
-                            @csrf
-                        </form>
+                        </a>                        
                     </li>
                 </ul>
             </nav>
@@ -134,3 +125,19 @@
         <!-- /.sidebar -->
     </aside>
 </template>
+<script>
+    export default {
+        name: 'sidebar',
+        methods: {
+            logout() {
+                this.$store.commit('logout');
+                this.$router.push('/login');
+            }
+        },
+        computed: {
+            currentUser() {
+                return this.$store.getters.currentUser
+            }
+        }
+    }
+</script>

@@ -13,12 +13,18 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Auth::routes();
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Auth::routes();
+Route::post('password/email', 'Auth\ApiForgotPasswordController@forgot');
+Route::post('password/reset', 'Auth\ApiForgotPasswordController@reset');
+
+Route::post('/validated','Auth\AuthController@validated')->name('api.validated');
+
+Route::post('/change-password','Auth\AuthController@change_password');
 
 Route::post('/login','Auth\AuthController@login')->name('api.login');
 
@@ -53,3 +59,6 @@ Route::apiResource('/notification','NotificationController');
 Route::apiResource('/bonus','BonusController');
 
 Route::apiResource('/investment','InvestmentController');
+
+Route::get('/country', 'CountryController@index');
+

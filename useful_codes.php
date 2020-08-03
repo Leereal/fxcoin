@@ -8,3 +8,6 @@ fetch('https://api.ipify.org?format=json')
 .then(({ ip }) => {
     this.term = ip;
 });
+
+//Grab URL Ref
+${this.$route.params.ref}

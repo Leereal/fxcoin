@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\MailResetPasswordNotification;
+
+
 
 class User extends Authenticatable
 {
@@ -17,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'username','email', 'password','cellphone','ipAddress','country_id','email', 'password',
+        'name', 'surname', 'username','email', 'password','cellphone','ipAddress','country_id','referrer_id','email', 'password',
     ];
 
     /**
@@ -38,6 +41,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // public function sendPasswordResetNotification($token)
+    // {
+    
+    //     $this->notify(new App\Notifications\MailResetPasswordNotification($token));
+    
+    // }
     //Roles Relationship
     public function roles()
     {
@@ -141,5 +150,7 @@ class User extends Authenticatable
     {
         return $this->referral_link = route('register', ['ref' => $this->username]);
     }
+    
+    
 
 }
