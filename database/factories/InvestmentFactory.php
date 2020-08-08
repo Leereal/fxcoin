@@ -16,8 +16,7 @@ $factory->define(Investment::class, function (Faker $faker) {
         'user_id' => mt_rand(1,20), 
         'due_date' => $faker->dateTimeBetween('now', '+2 months'),
         'payment_method_id' => mt_rand(1,6),
-        'comments' =>$faker->text(),      
-        'pop'=>$faker->image(public_path('images'),400,300, null, false),            
+        'comments' =>$faker->text(),
         'ipAddress'=>$faker->ipv4,
         'currency_id' => 1,  
     ];

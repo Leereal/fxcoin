@@ -62,6 +62,9 @@ Route::apiResource('/investment','InvestmentController');
 
 Route::get('/country', 'CountryController@index');
 
+//Routes for payment details
+Route::get('/investments','InvestmentController@investments');
+
 //Routes for offers
 Route::get('/offers', 'PendingPaymentController@offers');
 Route::post('/make-payment','PendingPaymentController@make_payment');

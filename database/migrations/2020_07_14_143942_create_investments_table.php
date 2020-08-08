@@ -26,8 +26,7 @@ class CreateInvestmentsTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('payment_method_id');
             $table->unsignedBigInteger('currency_id');
-            $table->text('comments');
-            $table->string('pop');
+            $table->text('comments');   
             $table->integer('status')->default(101);
             $table->ipAddress('ipAddress');
             $table->softDeletes();          

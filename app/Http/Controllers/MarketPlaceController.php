@@ -19,7 +19,7 @@ class MarketPlaceController extends Controller {
 
     public function index() {
 
-        $marketplaces = MarketPlace::where( 'status', '2' )->paginate();
+        $marketplaces = MarketPlace::where( 'status', '1' )->paginate();
         return MarketPlaceResource::collection( $marketplaces );
 
     }

@@ -31,4 +31,6 @@ class PendingPayment extends Model
     {
         return $query->where('status', 1);
     }
+
+    protected $guarded = [];
 }
