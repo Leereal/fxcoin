@@ -22,7 +22,7 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        $investments = Investment::with('package','referral_bonus','user','payment_method')->orderBy('id','desc')->paginate();
+        $investments = Investment::with('package','referral_bonus','user','payment_method')->active()->orderBy('id','desc')->paginate();
         return InvestmentResource::collection($investments);
     }
     /**
@@ -38,7 +38,7 @@ class InvestmentController extends Controller
             'package_id'        => 'required|integer',            
             'payment_method_id' => 'required|integer', 
             //'pop'               => 'mimes:pdf,jpeg,jpg,png,gif|max:10000|nullable',
-            'comments'          => 'required|max:1000|nullable',                     
+            'comment'          => 'required|max:1000|nullable',                     
         ]);
 
         //------------Start transaction------------------//
@@ -48,15 +48,15 @@ class InvestmentController extends Controller
             $package    = Packages::findOrFail($request->input('package_id'));
             //Check if user was referred
             $referrer   = User::findOrFail($request->input('user_id'))->referrer_id;                   
-            
+            $user = auth('api')->user();
             //Add Investment
             $investment                          = new Investment;
             $investment->amount                  = $request->input('amount');        
             $investment->description             = 'Deposit';
             $investment->package_id              = $request->input('package_id');
             $investment->transaction_code        = Carbon::now()->timestamp;//. '-' . Auth::user()->id;      
-            $investment->user_id                 = $request->input('user_id');//Auth::user()->id
-            $investment->comments                = $request->input('comments');
+            $investment->user_id                 = $user->id;
+            $investment->comments                = $request->input('comment');
             $investment->due_date                = Carbon::now()->addDays($package->period);
             $investment->payment_method_id       = $request->input('payment_method_id');
             $investment->currency_id             = 1; //From settings table;

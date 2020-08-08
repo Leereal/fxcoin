@@ -62,3 +62,28 @@ Route::apiResource('/investment','InvestmentController');
 
 Route::get('/country', 'CountryController@index');
 
+//Routes for offers
+Route::get('/offers', 'PendingPaymentController@offers');
+Route::post('/make-payment','PendingPaymentController@make_payment');
+Route::post('/approve-payment','PendingPaymentController@approve_payment');
+
+
+//Routes for pending payments
+Route::get('/pending-payments','MarketPlaceController@pending_payments');
+
+//Routes for payment details
+Route::get('/user-payment-details','PaymentDetailController@user_payment_details');
+
+Route::post('/update-profile','UsersController@update');
+Route::get('/referrals','UsersController@referrals');
+
+
+//Routes for settings
+Route::post('/open-market-place','SettingsController@open_market_place');
+Route::post('/close-market-place','SettingsController@close_market_place');
+Route::get('/market-open','SettingsController@market_open');
+
+
+
+
+

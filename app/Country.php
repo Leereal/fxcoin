@@ -17,4 +17,8 @@ class Country extends Model
     {
         return $this->hasMany('App\Currency');
     }
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
 }

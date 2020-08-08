@@ -30,5 +30,16 @@ class Investment extends Model
         return $this->belongsTo('App\User');
     }
 
+    //MarketPlace Relationship
+    public function market_places()
+    {
+        return $this->hasMany('App\MarketPlace');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     
 }

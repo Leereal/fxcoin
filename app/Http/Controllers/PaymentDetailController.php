@@ -20,7 +20,12 @@ class PaymentDetailController extends Controller
         return PaymentDetailResource::collection($payment_details);
     }
 
- 
+    public function user_payment_details()
+    {
+        $user_payment_details = PaymentDetail::where('user_id',auth('api')->user()->id)->paginate();
+        return PaymentDetailResource::collection($user_payment_details);
+    }
+        
     /**
      * Store a newly created resource in storage.
      *
@@ -30,12 +35,11 @@ class PaymentDetailController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id'           => 'required|integer',
             'payment_method_id' => 'required|integer',
             'account_number'    => 'required|max:255',            
         ]);
         $payment_detail                     =   new PaymentDetail;
-        $payment_detail->user_id            =   $request->input('user_id');         
+        $payment_detail->user_id            =   auth('api')->user()->id;         
         $payment_detail->payment_method_id  =   $request->input('payment_method_id'); 
         $payment_detail->account_number     =   $request->input('account_number');       
         $payment_detail->ipAddress          =   request()->ip();

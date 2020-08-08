@@ -18,6 +18,11 @@ class ReferralBonus extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     // //Referred User Relationship
     // public function referred_user()
     // {

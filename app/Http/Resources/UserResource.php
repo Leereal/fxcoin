@@ -29,7 +29,8 @@ class UserResource extends JsonResource
             'country'=> $this->country->name,
             'ipAddress'=> $this->ipAddress,
             'roles' => RoleResource::collection($this->roles)->map->only('name') ,
-            'referrals' => UserResource::collection($this->referrals)->map->only('name','surname')
+            'referrals' => $this->referral,
+            'registration_date' => $this->created_at
         ];
     }
 }

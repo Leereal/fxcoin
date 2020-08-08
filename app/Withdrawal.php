@@ -18,4 +18,9 @@ class Withdrawal extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
 }

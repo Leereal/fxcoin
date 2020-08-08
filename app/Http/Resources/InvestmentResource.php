@@ -29,7 +29,8 @@ class InvestmentResource extends JsonResource
             'firstname'=> $this->user->name,
             'surname'=> $this->user->surname,
             'comments'=> $this->comments,
-            'ipAddress'=> $this->ipAddress,  
+            'ipAddress'=> $this->ipAddress,
+            'status'=> $this->status,  
             'referral_bonus_amount'=> $this->referral_bonus->amount ?? 'No bonus'                   
         ];
     }

@@ -21,14 +21,16 @@ class CreateMarketPlacesTable extends Migration
             $table->string('reason');
             $table->string('transaction_code')->unique();   
             $table->unsignedBigInteger('payment_detail_id');
+            $table->unsignedBigInteger('investment_id');
             $table->unsignedBigInteger('user_id');
-            $table->text('comments');            
-            $table->integer('status')->default(1);
+            $table->text('comment')->nullable();            
+            $table->integer('status')->default(2);
             $table->ipAddress('ipAddress');
             $table->softDeletes();   
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');            
             $table->foreign('payment_detail_id')->references('id')->on('payment_details')->onDelete('cascade');
+            $table->foreign('investment_id')->references('id')->on('investments')->onDelete('cascade');
         });
     }
 

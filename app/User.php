@@ -151,6 +151,11 @@ class User extends Authenticatable
         return $this->referral_link = route('register', ['ref' => $this->username]);
     }
     
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
     
 
 }

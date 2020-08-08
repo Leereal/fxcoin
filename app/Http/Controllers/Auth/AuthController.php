@@ -18,9 +18,9 @@ class AuthController extends Controller {
             'password' => 'required|string',
             //'remember_me' => 'boolean|nullable'
         ] );
-        
+         
         $credentials = request( ['email', 'password'] );
-        if ( !Auth::attempt( $credentials ) )
+        if ( !Auth::attempt(['email' => request()->email, 'password' => request()->password, 'status' => 1]) )
         return response()->json( [
             'message' => 'Unauthorized'
         ], 401 );
@@ -72,10 +72,10 @@ class AuthController extends Controller {
         $request->validate( [
             'name'      => ['required', 'string', 'max:255'],
             'surname'   => ['required', 'string', 'max:255'],
-            'username'  => ['required', 'string', 'unique:users', 'alpha_dash', 'min:3', 'max:30'],
+            'username'  => ['required', 'string', 'unique:users', 'alpha_dash', 'min:5', 'max:30'],
             'email'     => ['required', 'string', 'email', 'max:255', 'unique:users'],
             //'password'  => ['required', 'string', 'min:8', 'confirmed'],
-            'cellphone' => ['required', 'string', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:30'],
+            'cellphone' => ['required', 'string', 'unique:users', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:30'],
             // 'ipAddress' => ['required', 'ip'],
             'country_id'=> ['required', 'integer'],
             'referrer_id'=> ['nullable', 'integer'],

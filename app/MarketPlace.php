@@ -23,4 +23,15 @@ class MarketPlace extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    //Investment Relationship
+    public function investment()
+    {
+        return $this->belongsTo('App\Investment');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
 }

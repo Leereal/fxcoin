@@ -18,28 +18,7 @@ class UsersController extends Controller
     {
         $users = User::with('country','roles','referrals')->paginate();
         return UserResource::collection($users);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    }  
 
     /**
      * Display the specified resource.
@@ -55,15 +34,12 @@ class UsersController extends Controller
        return new UserResource($user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function referrals()
     {
-        //
+         $user = auth('api')->user()->id;
+         $referrals = User::with('country')->where( 'referrer_id',$user)->paginate();
+        return UserResource::collection($referrals);
+        
     }
 
     /**
@@ -73,9 +49,17 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $user = auth('api')->user();
+        $request->validate([           
+            'cellphone'      => ['required', 'string', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:30'],
+        ]);
+        $user                 = User::findOrFail($user->id);       
+        $user->cellphone   = $request->input('cellphone');             
+        if($user->save()){
+            return ['message'=>'Saved Successfully'];
+        }
     }
 
     /**
