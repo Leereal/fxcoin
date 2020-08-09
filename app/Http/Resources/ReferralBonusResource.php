@@ -18,9 +18,11 @@ class ReferralBonusResource extends JsonResource
         return [
             'id'=> $this->id,
             'amount'=> $this->amount, 
+            'date_received'=> $this->created_at, 
             'investment_amount'=> $this->investment->amount,  
             'referrer'=> $this->user->name,
-            'referred_user'=> $this->referred_user->name,                 
+            'referral'=> $this->investment->user->username,
+            'package'=> $this->investment->package->name                
         ];
     }
 }

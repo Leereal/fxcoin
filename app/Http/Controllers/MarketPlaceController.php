@@ -19,9 +19,16 @@ class MarketPlaceController extends Controller {
 
     public function index() {
 
-        $marketplaces = MarketPlace::where( 'status', '1' )->paginate();
+        $marketplaces = MarketPlace::where( 'status', '1' )->paginate(20);
         return MarketPlaceResource::collection( $marketplaces );
 
+    }
+
+    
+    public function user_pending_payments()
+    {
+        $market_places = MarketPlace::where('user_id',auth('api')->id)->with('pending_payments')->paginate();
+        return MarketPlace::collection($market_places);
     }
 
     public function pending_payments() {

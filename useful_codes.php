@@ -13,4 +13,4 @@ fetch('https://api.ipify.org?format=json')
 ${this.$route.params.ref}
 
 //Create serve 
-php artisan serve --host=172.10.29.100 --port=8080
+php artisan serve --host=192.168.0.108 --port=80

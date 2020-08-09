@@ -32,6 +32,12 @@ class PendingPaymentController extends Controller
         $pending_payments = PendingPayment::paginate();
         return PendingPaymentResource::collection($pending_payments);
     }
+
+    public function user_pending_payments()
+    {
+        $pending_payments = PendingPayment::with('market_place','market_place.user')->paginate();
+        return  $pending_payments;
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -73,6 +73,7 @@ Route::post('/approve-payment','PendingPaymentController@approve_payment');
 
 //Routes for pending payments
 Route::get('/pending-payments','MarketPlaceController@pending_payments');
+Route::get('/user-pending-payments','PendingPaymentController@user_pending_payments');
 
 //Routes for payment details
 Route::get('/user-payment-details','PaymentDetailController@user_payment_details');
@@ -85,6 +86,10 @@ Route::get('/referrals','UsersController@referrals');
 Route::post('/open-market-place','SettingsController@open_market_place');
 Route::post('/close-market-place','SettingsController@close_market_place');
 Route::get('/market-open','SettingsController@market_open');
+
+//Referral Bonuses Routes
+Route::get('/user-referral-bonus','ReferralBonusController@user_referral_bonus');
+
 
 
 
