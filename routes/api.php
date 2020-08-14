@@ -19,8 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('password/email', 'Auth\ApiForgotPasswordController@forgot');
-Route::post('password/reset', 'Auth\ApiForgotPasswordController@reset');
+Route::post('password/email', 'Auth\Api\ForgotPasswordController@forgot');
+Route::post('password_reset', 'Auth\Api\ForgotPasswordController@reset')->name('password.reset');
+Route::get('password/reset/{token}', 'Auth\Api\ForgotPasswordController@getReset');
 
 Route::post('/validated','Auth\AuthController@validated')->name('api.validated');
 
@@ -29,6 +30,10 @@ Route::post('/change-password','Auth\AuthController@change_password');
 Route::post('/login','Auth\AuthController@login')->name('api.login');
 
 Route::post('/register','Auth\AuthController@register')->name('api.register');
+
+Route::get('email/verify/{id}', 'Auth\Api\VerificationController@verify')->name('verification.verify'); // Make sure to keep this as your route name
+
+Route::get('email/resend', 'Auth\Api\VerificationController@resend')->name('verification.resend');
 
 Route::get('/users', 'UsersController@index');
 
@@ -89,6 +94,10 @@ Route::get('/market-open','SettingsController@market_open');
 
 //Referral Bonuses Routes
 Route::get('/user-referral-bonus','ReferralBonusController@user_referral_bonus');
+
+//Dashboard Routes
+Route::get('/dashboard','DashboardController@dashboard');
+
 
 
 

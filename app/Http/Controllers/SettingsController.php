@@ -22,14 +22,7 @@ class SettingsController extends Controller
     public function close_market_place()
     {
         return Settings::findOrFail(1)->update(['status' => 0]);
-    }
-
-    //Check if market is open
-    public function market_open()
-    {       
-        $res = Settings::where('id', 1)->first();
-        return $res->status;
-    }
+    }  
 
     public function mature_investments()
     {

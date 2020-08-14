@@ -11,11 +11,9 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
-        App\PaymentMethod::create(['name'=>'ABSA']);
-        App\PaymentMethod::create(['name'=>'FNB']);
-        App\PaymentMethod::create(['name'=>'BITCOIN']);
-        App\PaymentMethod::create(['name'=>'ECOCASH']);
-        App\PaymentMethod::create(['name'=>'PERFECT MONEY']);
-        App\PaymentMethod::create(['name'=>'SKRILL']);
+        App\PaymentMethod::create(['name'=>'BITCOIN','avatar'=>'bitcoin.png']);
+        App\PaymentMethod::create(['name'=>'SKRILL','avatar'=>'skrill.png']);
+        App\PaymentMethod::create(['name'=>'PERFECT MONEY','avatar'=>'perfect_money.png']);
+        App\PaymentMethod::create(['name'=>'NETELLER','avatar'=>'neteller.png']);
     }
 }

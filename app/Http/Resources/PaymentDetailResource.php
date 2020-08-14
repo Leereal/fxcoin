@@ -21,7 +21,8 @@ class PaymentDetailResource extends JsonResource
             'ipAddress'=> $this->ipAddress,  
             'first_name'=> $this->user->name,
             'surname'=> $this->user->surname,           
-            'payment_method'=> $this->payment_method->name,            
+            'payment_method'=> $this->payment_method->name, 
+            'payment_method_avatar'=> url('/')."/images/".$this->payment_method->avatar,              
         ];
     }
 }

@@ -7,10 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\MailResetPasswordNotification;
+use App\Notifications\VerifyApiEmail;
 
-
-
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable,HasApiTokens;
 
@@ -40,6 +39,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //API Email Verification
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail); // my notification
+    }
 
     // public function sendPasswordResetNotification($token)
     // {
@@ -107,11 +112,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Notification');
     }
 
-     //OnlineUser Relationship
-     public function online_user()
-     {
-         return $this->belongsTo('App\OnlineUser');
-     }
+    //OnlineUser Relationship
+    public function online_user()
+    {
+        return $this->belongsTo('App\OnlineUser');
+    }
 
      
     /**
@@ -156,6 +161,4 @@ class User extends Authenticatable
     {
         return $query->where('status', 1);
     }
-    
-
 }

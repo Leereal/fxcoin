@@ -22,7 +22,8 @@ class CreatePendingPaymentsTable extends Migration
             $table->unsignedBigInteger('payment_method_id');
             $table->unsignedBigInteger('package_id');
             $table->unsignedBigInteger('user_id');
-            $table->text('comment')->nullable();    
+            $table->text('comment')->nullable();
+            $table->string('pop')->nullable();     
             $table->dateTime('expiration_time');        
             $table->integer('status')->default(2);
             $table->ipAddress('ipAddress');

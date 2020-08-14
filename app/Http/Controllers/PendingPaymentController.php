@@ -13,6 +13,8 @@ use App\PendingPayment;
 use App\ReferralBonus;
 use App\Investment;
 use App\MarketPlace;
+use App\Settings;
+
 
 use App\Http\Resources\InvestmentResource;
 //use Laravel\Passport\Client;
@@ -35,7 +37,7 @@ class PendingPaymentController extends Controller
 
     public function user_pending_payments()
     {
-        $pending_payments = PendingPayment::with('market_place','market_place.user')->paginate();
+        $pending_payments = PendingPayment::with('market_place', 'market_place.user')->paginate();
         return  $pending_payments;
     }
     /**
@@ -48,45 +50,56 @@ class PendingPaymentController extends Controller
     {
         $request->validate([
             'balance'              =>'required|max:10|between:0,99.99|',
-            'amount'              => 'required|max:10|between:0,99.99|lte:balance',
+            'amount'              => 'required|max:10|between:0,99.99|lte:balance|gt:0',
             'market_place_id'     => 'required|integer',
             'payment_method_id'   => 'required|integer',
             'package_id'          => 'required|integer',
             'comment'             => 'max:1000|nullable',
         ]);
         $user = auth('api')->user();
-        try {
-            DB::beginTransaction();
-            $pending_payment                          = new PendingPayment;
-            $pending_payment->amount                  = $request->input('amount');
-            $pending_payment->market_place_id         = $request->input('market_place_id');
-            $pending_payment->payment_method_id       = $request->input('payment_method_id');
-            $pending_payment->package_id              = $request->input('package_id');
-            $pending_payment->transaction_code        = Carbon::now()->timestamp. '-' . $user->id;
-            $pending_payment->user_id                 = $user->id;
-            $pending_payment->comment                 = $request->input('comment');
-            $pending_payment->expiration_time         = Carbon::now()->addHours(12);
-            $pending_payment->ipAddress               = request()->ip();
-            $pending_payment->save();
+        $min_amount = Settings::where('id', 3)->first();
+        $max_amount = Settings::where('id', 4)->first();
 
-            $amount =$request->input('amount');
-            $balance =$request->input('balance');
-            //Get market place and then reduce its value by amount offered by current user
-            $market_place = MarketPlace::findOrFail($request->input('market_place_id'));
-            if ($amount==$balance) {
-                $market_place->balance -= $amount;
-                $market_place->status   = 100;
-            } else {
-                $market_place->balance -= $amount;
+
+        if ($min_amount->amount < $request->amount && $max_amount->amount >$request->amount) {        
+            try {
+                DB::beginTransaction();
+                $pending_payment                          = new PendingPayment;
+                $pending_payment->amount                  = $request->input('amount');
+                $pending_payment->market_place_id         = $request->input('market_place_id');
+                $pending_payment->payment_method_id       = $request->input('payment_method_id');
+                $pending_payment->package_id              = $request->input('package_id');
+                $pending_payment->transaction_code        = Carbon::now()->timestamp. '-' . $user->id;
+                $pending_payment->user_id                 = $user->id;
+                $pending_payment->comment                 = $request->input('comment');
+                $pending_payment->expiration_time         = Carbon::now()->addHours(12);
+                $pending_payment->ipAddress               = request()->ip();
+                $pending_payment->save();
+
+                $amount =$request->input('amount');
+                $balance =$request->input('balance');
+                //Get market place and then reduce its value by amount offered by current user
+                $market_place = MarketPlace::findOrFail($request->input('market_place_id'));
+                if ($amount==$balance) {
+                    $market_place->balance -= $amount;
+                    $market_place->status   = 100;
+                } else {
+                    $market_place->balance -= $amount;
+                }
+                $market_place->save();
+                DB::commit();
+                return new PendingPaymentResource($pending_payment);
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
             }
-            $market_place->save();
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
+        } else {
+            $rdata= array(
+            'status' => 'error',
+            'message' => 'Check if amount is between allowed minimum and maximum daily limit and also if it is above balance'
+        );
+            return response()->json($rdata, 500);
         }
-
-        return new PendingPaymentResource($pending_payment);
     }
 
     /**
@@ -133,7 +146,7 @@ class PendingPaymentController extends Controller
     public function offers()
     {
         $user = auth('api')->user()->id;
-        $offers = PendingPayment::where('user_id', '=', $user)->where('status', '=', '2')->paginate();
+        $offers = PendingPayment::where('user_id', '=', $user)->where('status', '=', '2')->get();
 
         //Return single pending_payment as a resource
         return PendingPaymentResource::collection($offers);
@@ -144,14 +157,21 @@ class PendingPaymentController extends Controller
         $request->validate([
             'id'                  => 'required|integer',
             'comment'             => 'max:1000|nullable',
+            'pop'                 => 'required',
         ]);
-        $make_payment            = PendingPayment::findOrFail($request->id);
-        $make_payment->id        = $request->input('id');
-        $make_payment->comment   = $request->input('comment');
-        $make_payment->status    = 101;
-        // $make_payment->pop    = $request->input('pop');
-        if ($make_payment->save()) {
-            return ['message'=>'Saved Successfully'];
+        if ($request->pop) {
+            $extension = explode('/', mime_content_type($request->pop))[1];
+            $name = time()."-".auth('api')->user()->id.".".$extension;
+            \Image::make($request->pop)->save(public_path('images/'.$name));
+      
+            $make_payment            = PendingPayment::findOrFail($request->id);
+            $make_payment->id        = $request->input('id');
+            $make_payment->comment   = $request->input('comment');
+            $make_payment->pop       = $name;
+            $make_payment->status    = 101;
+            if ($make_payment->save()) {
+                return ['message'=>'Saved Successfully'];
+            }
         }
     }
 
@@ -162,7 +182,7 @@ class PendingPaymentController extends Controller
         ]);
 
         //Get pending order with posted id
-        $pending_payment = PendingPayment::where('id',$request->input('id'))->first();
+        $pending_payment = PendingPayment::where('id', $request->input('id'))->first();
 
         //Get package of the  pending order
         $package    = Packages::findOrFail($pending_payment->package_id)->first();
@@ -172,12 +192,12 @@ class PendingPaymentController extends Controller
         
         $amount = $pending_payment->amount;
         $expected_profit = $amount + ($package->period * $package->daily_interest /100 * $amount);
-        $balance = $expected_profit;    
+        $balance = $expected_profit;
 
         //Take investment done today by pending order user(buyer)  and with the same package to join with the current one if any
         $investment  = Investment::where('user_id', $pending_payment->user_id)->whereDate('created_at', Carbon::today())->where('package_id', $pending_payment->package_id)->where('status', 101)->first();
         //If there was a valid investment done today of the same package from the same user then update it to have one investment
-        if ($investment) {         
+        if ($investment) {
             try {
                 DB::beginTransaction();
 
@@ -200,7 +220,6 @@ class PendingPaymentController extends Controller
                 throw $e;
             }
         } else { // Create new investment
-            return "No record created today by this user";
             try {
                 DB::beginTransaction();
 
@@ -235,6 +254,6 @@ class PendingPaymentController extends Controller
                 DB::rollback();
                 throw $e;
             }
-        }        
+        }
     }
 }
