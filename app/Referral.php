@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referral extends Model
 {
+    use SoftDeletes;
+    
     //User Relationship
     public function user()
     {

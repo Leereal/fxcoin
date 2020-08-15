@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MarketPlace extends Model
 {
+    use SoftDeletes;
+    
     //PendingPayment Relationship
     public function pending_payments()
     {

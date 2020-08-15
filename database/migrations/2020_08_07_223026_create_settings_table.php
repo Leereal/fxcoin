@@ -15,11 +15,23 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('amount');
-            $table->text('description');
-            $table->integer('status')->default(1);
+            $table->string('user_type');
+            $table->integer('market_place_status');
+            $table->decimal('min_deposit');
+            $table->decimal('max_deposit');
+            $table->decimal('min_withdrawal');
+            $table->decimal('max_withdrawal');
+            $table->decimal('max_transactions');
+            $table->integer('number_of_users');
+            $table->decimal('total_deposits');
+            $table->decimal('total_withdrawals');
+            $table->decimal('total_online');
+            $table->string('trade_type');
+            $table->unsignedBigInteger('currency_id');
+            $table->integer('status')->default(1);            
             $table->timestamps();
+
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade'); 
         });
     }
 

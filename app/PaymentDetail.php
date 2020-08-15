@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentDetail extends Model
 {
+    use SoftDeletes;
     //Payment Method Relationship
     public function payment_method()
     {

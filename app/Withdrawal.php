@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use SoftDeletes;
 
 class Withdrawal extends Model
 {
+    use SoftDeletes;
     //Payment Detail Relationship
     public function payment_detail()
     {
