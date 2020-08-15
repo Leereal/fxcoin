@@ -11,7 +11,8 @@ $factory->define(Withdrawal::class, function (Faker $faker) {
         'reason' => 'Want Money',
         'transaction_code' => mt_rand(100000,999999),   
         'payment_detail_id' => mt_rand(1,10),   
-        'user_id' => mt_rand(1,20), 
+        'user_id' => mt_rand(1,20),
+        'investment_id' => mt_rand(1,20), 
         'comments' =>$faker->text(), 
         'ipAddress'=>$faker->ipv4, 
     ];

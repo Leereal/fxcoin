@@ -13,14 +13,14 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $user = auth('api')->user();
-        $total_balance = Investment::where('user_id', $user->id)->where('status', '>', 0)->get()->sum('balance');
-        $total_amount = Investment::where('user_id', $user->id)->where('status', '>', 0)->get()->sum('amount');
-        $total_payments = PendingPayment::with('market_place', 'market_place.user')->where('status', '=', 0)->get()->sum('amount');
-        $total_referrals = User::where('referrer_id', $user->id)->where('status', '>', 0)->get()->count();
-        $total_referral_bonus = ReferralBonus::where('user_id', $user->id)->where('status', '>', 0)->get()->sum('amount');
-        $total_offers = PendingPayment::where('user_id', $user->id)->where('status', '=', 2)->get()->sum('amount');
-        $total_sales = MarketPlace::where('user_id', $user->id)->where('status', '>', 0)->get()->sum('amount');
-        $total_active_members = User::where('referrer_id', $user->id)->whereHas('investments')->active()->get()->count();
+        $total_balance          = $user->investments()->where('status', '>', 0)->get()->sum('balance');
+        $total_amount           = $user->investments()->where('investments.status', '>', 0)->get()->sum('amount');
+        $total_payments         = $user->pending_payments()->where('pending_payments.status', '=', 0)->get()->sum('amount');
+        $total_referrals        = $user->referrals()->where('status', '>', 0)->get()->count();
+        $total_referral_bonus   = $user->referral_bonuses()->where('referral_bonuses.status', '>', 0)->get()->sum('amount');
+        $total_offers           = $user->offers()->where('pending_payments.status', '=', 2)->get()->sum('amount');
+        $total_sales            = $user->market_places()->where('market_places.status', '>', 0)->get()->sum('amount');
+        $total_active_members   = $user->referrals()->has('investments')->active('referrals')->get()->count();
       
         return $totals = [
             'balance' => number_format($total_balance, 2),

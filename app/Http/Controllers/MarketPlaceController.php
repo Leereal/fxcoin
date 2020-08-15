@@ -21,7 +21,8 @@ class MarketPlaceController extends Controller
 
     public function index()
     {
-        if ($this->market_open()>0) {
+        $settings = Settings::where('id', 1)->first();
+        if ($settings->market_place_status > 0) {
             $marketplaces = MarketPlace::where('status', '1')->get();
             return MarketPlaceResource::collection($marketplaces);
         }
@@ -34,13 +35,6 @@ class MarketPlaceController extends Controller
         }
     }
 
-    //Check if market is open
-    public function market_open()
-    {
-        $res = Settings::where('id', 1)->first();
-        return $res->status;
-    }
-    
     public function user_pending_payments()
     {
         $market_places = MarketPlace::where('user_id', auth('api')->id)->with('pending_payments')->paginate();
@@ -69,7 +63,7 @@ class MarketPlaceController extends Controller
             'reason'            => 'required|string|max:255',
             'payment_detail_id' => 'required|integer',
             'investment_id'     => 'required|integer',
-            'due_date'     => 'required',
+            'due_date'          => 'required',
             'comment'           => 'max:1000|nullable',
         ]);
         //------------Start transaction------------------//
@@ -77,11 +71,12 @@ class MarketPlaceController extends Controller
         $amount  = $request->input('amount');
         $due_date  = $request->input('due_date');
 
-        $min_amount = Settings::where('id', 3)->first();
-        $max_amount = Settings::where('id', 4)->first();
+        $settings = Settings::where('id', 1)->first();
+        $min_amount = $settings->min_withdrawal;
+        $max_amount = $settings->max_withdrawal;
 
 
-        if ($amount <= $balance && $amount!=0 && $due_date<now() && $min_amount->amount < $amount && $max_amount->amount >$amount) {
+        if ($amount <= $balance && $amount!=0 && $due_date<now() && $min_amount < $amount && $max_amount >$amount) {
             $investment_balance = $balance-$amount;
             if ($amount == $balance) {
                 $status = 0;

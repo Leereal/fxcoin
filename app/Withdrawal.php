@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Withdrawal extends Model
 {
@@ -18,6 +18,12 @@ class Withdrawal extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    //,Investment Relationship
+    public function investment()
+    {
+        return $this->belongsTo('App\Investment');
     }
 
     public function scopeActive($query)

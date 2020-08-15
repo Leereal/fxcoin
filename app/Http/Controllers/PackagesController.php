@@ -27,7 +27,16 @@ class PackagesController extends Controller
         $packages = Packages::paginate();
         return PackageResource::collection($packages);
     }
-  
+    public function peer_packages() 
+    {        
+        $packages = Packages::where('category','Peer to Peer')->get();
+        return PackageResource::collection($packages);
+    }
+    public function deposit_packages() 
+    {        
+        $packages = Packages::where('category','Deposit')->get();
+        return PackageResource::collection($packages);
+    }  
 
     /**
      * Store a newly created resource in storage.

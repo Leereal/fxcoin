@@ -15,8 +15,8 @@ class SettingsController extends Controller
         $this->mature_investments();
         //Select All Market Place orders which are pending and set status to 1
         MarketPlace::where('status', 2)->update(['status' => 1]);
-        //Set open market to status 1
-        return Settings::findOrFail(1)->update(['status' => 1]);
+        //Set open market to status 1        
+        return Settings::findOrFail(1)->update(['market_place_status' => 1]);
     }
 
     public function close_market_place()

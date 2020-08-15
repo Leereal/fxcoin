@@ -11,6 +11,6 @@ class OnlineUserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\OnlineUser::class, 50)->create();
+        factory(App\OnlineUser::class, 100)->create();
     }
 }

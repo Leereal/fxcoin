@@ -40,6 +40,12 @@ class Investment extends Model
         return $this->hasMany('App\MarketPlace');
     }
 
+    //Withdrawals Relationship
+    public function withdrawals()
+    {
+        return $this->hasMany('App\Withdrawal');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 1);

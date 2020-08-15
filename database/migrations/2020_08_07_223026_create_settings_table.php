@@ -27,9 +27,11 @@ class CreateSettingsTable extends Migration
             $table->decimal('total_withdrawals');
             $table->decimal('total_online');
             $table->string('trade_type');
+            $table->string('bitcoin');
             $table->unsignedBigInteger('currency_id');
             $table->integer('status')->default(1);            
             $table->timestamps();
+            $table->softDeletes(); 
 
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade'); 
         });

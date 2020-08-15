@@ -12,4 +12,13 @@ class OnlineUser extends Model
     {
         return $query->where('status', 1);
     }
+
+    //User Relationship
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    protected $guarded = []; 
+
 }

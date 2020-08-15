@@ -20,6 +20,7 @@ class CreateWithdrawalsTable extends Migration
             $table->string('reason');
             $table->string('transaction_code')->unique();   
             $table->unsignedBigInteger('payment_detail_id');
+            $table->unsignedBigInteger('investment_id');
             $table->unsignedBigInteger('user_id');
             $table->text('comments')->nullable();            
             $table->integer('status')->default(1);
@@ -28,6 +29,7 @@ class CreateWithdrawalsTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');            
             $table->foreign('payment_detail_id')->references('id')->on('payment_details')->onDelete('cascade');
+            $table->foreign('investment_id')->references('id')->on('investments')->onDelete('cascade');
         });
     }
 

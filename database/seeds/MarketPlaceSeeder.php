@@ -11,6 +11,6 @@ class MarketPlaceSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\MarketPlace::class, 20)->create();
+        factory(App\MarketPlace::class, 30)->create();
     }
 }

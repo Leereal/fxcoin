@@ -20,6 +20,7 @@ class CreateOnlineUsersTable extends Migration
             $table->dateTime('sign_out')->nullable();
             $table->integer('online_status')->default(1);
             $table->ipAddress('ipAddress');
+            $table->string('mac_address')->nullable();
             $table->softDeletes();   
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

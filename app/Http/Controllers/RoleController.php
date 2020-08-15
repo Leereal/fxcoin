@@ -18,6 +18,7 @@ class RoleController extends Controller
     {
         $roles = Role::paginate();
         return RoleResource::collection($roles);
+        
     }
 
     /**

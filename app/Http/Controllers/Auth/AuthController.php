@@ -35,18 +35,35 @@ class AuthController extends Controller
             if ($request->remember_me) {
                 $token->expires_at = Carbon::now()->addWeeks(1);
             }
-            $token->save();
+            $token->save();            
+            
+            //Record session and device used to online users table
+            $online = new \App\OnlineUser(['ipaddress' => request()->ip(),'mac_address' => substr(exec('getmac'), 0, 17), ]);
+            $user->online_users()->save($online);
+
             return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
-            'user'=> $request->user()
+            'user'=> $request->user()           
+
         ]);
         } else {
             return response()->json(['error'=>'Please Verify Email'], 401);
         }
+    }
+    public function logout(Request $request)
+    {
+        //Set sign out session and device used to online users table
+        $user = auth('api')->user();
+        return $online = $user->online_users()->latest()->first()->update(['sign_out' => now(),'online_status' => 0]);
+        // \App\OnlineUser::find(1)
+        // $online = new \App\update(['sign_out' => now()]);
+        // $user->online_users()->save($online);
+        // $user = auth('api')->user();       
+        // return $online = $user->online_users()->latest()->first()->update(['sign_out' => now()]);
     }
  
     public function validated(Request $request)

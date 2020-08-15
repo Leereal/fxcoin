@@ -57,11 +57,12 @@ class PendingPaymentController extends Controller
             'comment'             => 'max:1000|nullable',
         ]);
         $user = auth('api')->user();
-        $min_amount = Settings::where('id', 3)->first();
-        $max_amount = Settings::where('id', 4)->first();
+        $settings = Settings::where('id', 1)->first();
+        $min_amount = $settings->min_deposit;
+        $max_amount = $settings->max_deposit;
 
 
-        if ($min_amount->amount < $request->amount && $max_amount->amount >$request->amount) {        
+        if ($min_amount < $request->amount && $max_amount > $request->amount) {        
             try {
                 DB::beginTransaction();
                 $pending_payment                          = new PendingPayment;

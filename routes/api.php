@@ -29,6 +29,8 @@ Route::post('/change-password','Auth\AuthController@change_password');
 
 Route::post('/login','Auth\AuthController@login')->name('api.login');
 
+Route::post('/logout','Auth\AuthController@logout')->name('api.logout');
+
 Route::post('/register','Auth\AuthController@register')->name('api.register');
 
 Route::get('email/verify/{id}', 'Auth\Api\VerificationController@verify')->name('verification.verify'); // Make sure to keep this as your route name
@@ -97,6 +99,10 @@ Route::get('/user-referral-bonus','ReferralBonusController@user_referral_bonus')
 
 //Dashboard Routes
 Route::get('/dashboard','DashboardController@dashboard');
+
+//Routes for packages
+Route::get('/deposit-packages','PackagesController@deposit_packages');
+Route::get('/peer-packages','PackagesController@peer_packages');
 
 
 

@@ -41,20 +41,13 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    //API Email Verification
-    public function sendApiEmailVerificationNotification()
-    {
-        $this->notify(new VerifyApiEmail); // my notification
-    }
-
-    // public function sendPasswordResetNotification($token)
-    // {
     
-    //     $this->notify(new App\Notifications\MailResetPasswordNotification($token));
-    
-    // }
-    //Roles Relationship
+
+    ////---------------------------------------------------Relationships--------------------------------------------////
+
+    /**
+     * The roles that belong to the user.
+     */
     public function roles()
     {
         return $this->belongsToMany('App\Role');
@@ -77,12 +70,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany('App\Investment');
     }
-
-    // //Referral Relationship
-    // public function referrals()
-    // {
-    //     return $this->hasMany('App\Referral');
-    // }
 
     //ReferralBonus Relationship
     public function referral_bonuses()
@@ -115,9 +102,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //OnlineUser Relationship
-    public function online_user()
+    public function online_users()
     {
-        return $this->belongsTo('App\OnlineUser');
+        return $this->hasMany('App\OnlineUser');
     }
 
      
@@ -141,18 +128,46 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(User::class, 'referrer_id', 'id');
     }
 
+    //Pending Payment Relationship
+    public function pending_payments()
+    {
+        return $this->hasManyThrough('App\PendingPayment', 'App\MarketPlace');
+    }
+
+    //Offers Relationship
+    public function offers()
+    {
+        return $this->hasMany('App\PendingPayment');
+    }
+
+
+    ////---------------------------------------------------Other Functions--------------------------------------------////
+    //API Email Verification
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail); // my notification
+    }
+
+    // public function sendPasswordResetNotification($token)
+    // {
+    
+    //     $this->notify(new App\Notifications\MailResetPasswordNotification($token));
+    
+    // }
+
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['referral_link'];
+    protected $appends = ['referral_link']; //add referral link when querying a user
 
     /**
      * Get the user's referral link.
      *
      * @return string
      */
+
     public function getReferralLinkAttribute()
     {
         return $this->referral_link = route('register', ['ref' => $this->username]);
@@ -162,5 +177,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeActive($query)
     {
         return $query->where('status', 1);
-    }
+    }    
+    
 }

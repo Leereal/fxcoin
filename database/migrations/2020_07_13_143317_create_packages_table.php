@@ -20,7 +20,8 @@ class CreatePackagesTable extends Migration
             $table->decimal('minimum');
             $table->decimal('daily_interest');
             $table->decimal('interest');//to display
-            $table->string('period');//In days
+            $table->integer('period');//In days
+            $table->string('category');//Either for  Peer to Peer or Deposits
             $table->integer('status')->default(1);
             $table->softDeletes(); 
         });
