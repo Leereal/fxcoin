@@ -186,13 +186,13 @@ class PendingPaymentController extends Controller
         $pending_payment = PendingPayment::where('id', $request->input('id'))->first();
 
         //Get package of the  pending order
-        $package    = Packages::findOrFail($pending_payment->package_id)->first();
+        $package    = Packages::findOrFail($pending_payment->package_id);
 
         //Check if user was referred
         $referrer   = User::findOrFail($pending_payment->user_id)->referrer_id;
         
         $amount = $pending_payment->amount;
-        $expected_profit = $amount + ($package->period * $package->daily_interest /100 * $amount);
+        $expected_profit = $amount + ($package->interest /100 * $amount);
         $balance = $expected_profit;
 
         //Take investment done today by pending order user(buyer)  and with the same package to join with the current one if any
@@ -227,7 +227,7 @@ class PendingPaymentController extends Controller
                 //Add Investment
                 $investment                          = new Investment;
                 $investment->amount                  = $amount;
-                $investment->description             = 'Points Purchase';
+                $investment->description             = 'Peer to Peer';
                 $investment->package_id              = $pending_payment->package_id;
                 $investment->transaction_code        = Carbon::now()->timestamp. '-' . $pending_payment->user_id;
                 $investment->user_id                 = $pending_payment->user_id;

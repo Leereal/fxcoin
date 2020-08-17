@@ -23,10 +23,11 @@ class CreateInvestmentsTable extends Migration
             $table->unsignedBigInteger('package_id');
             $table->unsignedBigInteger('user_id');
             $table->date('due_date');
+            $table->string('pop')->nullable();  
             $table->timestamps();
             $table->unsignedBigInteger('payment_method_id');
             $table->unsignedBigInteger('currency_id');
-            $table->text('comments');   
+            $table->text('comments')->nullable();
             $table->integer('status')->default(101);
             $table->ipAddress('ipAddress');
             $table->softDeletes();          
