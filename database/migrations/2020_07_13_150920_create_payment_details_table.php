@@ -17,7 +17,8 @@ class CreatePaymentDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('payment_method_id');           
+            $table->unsignedBigInteger('payment_method_id');   
+            $table->string('branch')->nullable();        
             $table->string('account_number');
             $table->ipAddress('ipAddress');           
             $table->integer('status')->default(1);

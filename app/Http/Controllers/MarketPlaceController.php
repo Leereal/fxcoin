@@ -76,7 +76,7 @@ class MarketPlaceController extends Controller
         $max_amount = $settings->max_withdrawal;
 
 
-        if ($amount <= $balance && $amount!=0 && $due_date<now() && $min_amount < $amount && $max_amount >$amount) {
+        if (($amount <= $balance) && ($amount!=0) && ($due_date < now()) && ($min_amount <= $amount) && ($max_amount >= $amount)) {
             $investment_balance = $balance-$amount;
             if ($amount == $balance) {
                 $status = 0;

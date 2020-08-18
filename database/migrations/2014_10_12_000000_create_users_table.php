@@ -24,7 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('cellphone');           
             $table->unsignedBigInteger('country_id'); 
             $table->unsignedBigInteger('role_id')->default(1);
-            $table->unsignedBigInteger('referrer_id')->nullable();                         
+            $table->unsignedBigInteger('referrer_id')->nullable();   
+            $table->unsignedBigInteger('currency_id');                        
             $table->rememberToken();            
             $table->timestamps();
             $table->ipAddress('ipAddress');
@@ -32,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
 
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->foreign('referrer_id')->references('id')->on('users');
         });

@@ -25,9 +25,21 @@ class PaymentMethodController extends Controller
      */
     public function index() 
     {        
-        $payment_methods = PaymentMethod::paginate();
+        $payment_methods = PaymentMethod::with('currency')->paginate();
         return PaymentMethodResource::collection($payment_methods);
     }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function user_payment_methods() 
+    {        
+        $payment_methods = PaymentMethod::where('currency_id',auth('api')->user()->currency_id)->get();    
+        return PaymentMethodResource::collection($payment_methods);
+    }
+  
   
 
     /**

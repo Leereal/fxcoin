@@ -17,11 +17,13 @@ class PaymentDetailResource extends JsonResource
         //return parent::toArray($request);
         return [
             'id'=> $this->id,
+            'branch'=> $this->branch, 
             'account_number'=> $this->account_number, 
             'ipAddress'=> $this->ipAddress,  
             'first_name'=> $this->user->name,
             'surname'=> $this->user->surname,           
             'payment_method'=> $this->payment_method->name, 
+            'currency'=> $this->payment_method->currency->name, 
             'payment_method_avatar'=> url('/')."/images/".$this->payment_method->avatar,              
         ];
     }

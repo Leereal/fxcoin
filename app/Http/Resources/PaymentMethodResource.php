@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Http\Resources\CurrencyResource;
+
 class PaymentMethodResource extends JsonResource
 {
     /**
@@ -18,6 +20,7 @@ class PaymentMethodResource extends JsonResource
         return [
             'id'=> $this->id,
             'name'=> $this->name,
+            'currency'=> $this->currency->name,            
             'avatar'=> url('/')."/images/".$this->avatar,                           
         ];
     }

@@ -40,7 +40,8 @@ class UsersTableSeeder extends Seeder
             'cellphone'=>'+27651749011',
             'username'=>'Leereal',            
             'ipAddress'=>'192.12.15.41.65',
-            'country_id'=>'1',             
+            'country_id'=>'1',
+            'currency_id'=>'1',             
         ]);
         $jael =App\User::create([
             'name'=>'Jael',
@@ -52,7 +53,8 @@ class UsersTableSeeder extends Seeder
             'username'=>'Jael', 
             'referrer_id'=>'1',
             'ipAddress'=>'192.12.15.41.64',
-            'country_id'=>'1',             
+            'country_id'=>'1', 
+            'currency_id'=>'1',               
         ]);
         $nyasha =App\User::create([
             'name'=>'Nyasha',
@@ -64,7 +66,8 @@ class UsersTableSeeder extends Seeder
             'username'=>'Nyasha',
             'referrer_id'=>'1', 
             'ipAddress'=>'192.12.15.41.63',
-            'country_id'=>'1',           
+            'country_id'=>'1',  
+            'currency_id'=>'2',            
         ]);
 
         //Attaching Roles to user

@@ -105,6 +105,11 @@ Route::get('/deposit-packages','PackagesController@deposit_packages');
 Route::get('/peer-packages','PackagesController@peer_packages');
 
 
+//Routes for payment methods
+Route::get('/user-payment-methods','PaymentMethodController@user_payment_methods');
+
+
+
 
 
 

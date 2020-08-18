@@ -29,6 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
         'username'=>$faker->unique()->userName,
         'ipAddress'=>$faker->ipv4,
         'country_id'=>mt_rand(1,3),
+        'currency_id'=>mt_rand(1,2),
         'role_id'=>mt_rand(1,3) ,
         'referrer_id'=>mt_rand(1,3) ,
 

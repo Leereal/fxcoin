@@ -140,6 +140,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\PendingPayment');
     }
 
+    //Currency Relationship
+    public function currency()
+    {
+        return $this->belongsTo('App\Currency');
+    }
 
     ////---------------------------------------------------Other Functions--------------------------------------------////
     //API Email Verification

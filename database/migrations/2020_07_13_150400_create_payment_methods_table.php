@@ -19,7 +19,10 @@ class CreatePaymentMethodsTable extends Migration
             $table->string('name');   
             $table->string('avatar');            
             $table->integer('status')->default(1);
+            $table->unsignedBigInteger('currency_id'); 
             $table->softDeletes(); 
+
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
         });
     }
 
