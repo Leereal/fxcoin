@@ -108,6 +108,9 @@ Route::get('/peer-packages','PackagesController@peer_packages');
 //Routes for payment methods
 Route::get('/user-payment-methods','PaymentMethodController@user_payment_methods');
 
+//Routes forbonus
+Route::get('/user-bonus','BonusController@user_bonus');
+
 
 
 

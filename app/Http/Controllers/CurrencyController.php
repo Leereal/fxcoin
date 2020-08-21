@@ -17,7 +17,7 @@ class CurrencyController extends Controller
      */
     public function index() 
     {        
-        $currencies = Currency::paginate();
+        $currencies = Currency::get();
         return CurrencyResource::collection($currencies);
     }
   

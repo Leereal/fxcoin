@@ -14,3 +14,10 @@ ${this.$route.params.ref}
 
 //Create serve 
 php artisan serve --host=192.168.0.108 --port=80
+
+User::whereDate('created_at', date('Y-m-d'));
+User::whereDay('created_at', date('d'));
+User::whereMonth('created_at', date('m'));
+User::whereYear('created_at', date('Y'));
+
+$localTime = $object->created_at->timezone($this->auth->user()->timezone);

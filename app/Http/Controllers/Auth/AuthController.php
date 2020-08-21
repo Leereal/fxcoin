@@ -11,7 +11,8 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
-
+use DB;
+use App\Bonus;
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -95,10 +96,12 @@ class AuthController extends Controller
             'confirm_password' => 'required|same:password',
             'cellphone' => ['required', 'string', 'unique:users', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:7', 'max:30'],
             'country_id'=> ['required', 'integer'],
+            'currency_id'=> ['required', 'integer'],
             'referrer_id'=> ['nullable', 'integer'],
             'terms'=> ['required']
         ]);
         try {
+            DB::beginTransaction();
             $user = User::create([
             'name'        => $request->name,
             'surname'     => $request->surname,
@@ -108,14 +111,25 @@ class AuthController extends Controller
             'password'    => Hash::make($request->password),
             'cellphone'   => $request->cellphone,
             'country_id'  => $request->country_id,
+            'currency_id'  => $request->currency_id,
             'ipAddress'   => request()->ip(),
             ]);
+            if($request->referrer_id>0){
+            $referrer = User::where('id',$request->referrer_id)->first();
+            $bonus = new Bonus;
+            $bonus->user_id = $request->referrer_id;
+            $bonus->amount  = ($referrer->currency_id =='2' ? 5 : 0.4);
+            $bonus->description = "Registration Bonus for ".$request->username;
+            $bonus->save();
+            }          
 
             $user->sendApiEmailVerificationNotification();
+            DB::commit();
 
             $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
             return response()->json(['success'=>$success], 200);
         } catch (\Exception $e) {
+            DB::rollback();
             throw $e;
         }
     }

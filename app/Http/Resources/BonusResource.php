@@ -18,7 +18,8 @@ class BonusResource extends JsonResource
         return [
             'id'=> $this->id,
             'amount'=> $this->amount, 
-            'description'=> $this->description,  
+            'description'=> $this->description, 
+            'date'=> $this->created_at,  
             'username'=> $this->user->name,                             
         ];
     }

@@ -21,6 +21,7 @@ class DashboardController extends Controller
         $total_offers           = $user->offers()->where('pending_payments.status', '=', 2)->get()->sum('amount');
         $total_sales            = $user->market_places()->where('market_places.status', '>', 0)->get()->sum('amount');
         $total_active_members   = $user->referrals()->has('investments')->active('referrals')->get()->count();
+        $total_bonus            = $user->bonuses()->active('bonuses')->get()->sum('amount');
       
         return $totals = [
             'balance' => number_format($total_balance, 2),
@@ -31,6 +32,7 @@ class DashboardController extends Controller
             'offers'  => number_format($total_offers, 2),
             'sales'  => number_format($total_sales, 2),
             'active_members'  => $total_active_members,
+            'bonus'  => $total_bonus,
         ];
     }
 }

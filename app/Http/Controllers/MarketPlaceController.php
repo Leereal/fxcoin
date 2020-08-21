@@ -21,9 +21,9 @@ class MarketPlaceController extends Controller
 
     public function index()
     {
-        $settings = Settings::where('id', 1)->first();
+        $settings = Settings::where('id', 1)->first();  
         if ($settings->market_place_status > 0) {
-            $marketplaces = MarketPlace::where('status', '1')->get();
+            $marketplaces = MarketPlace::where('status', '1')->with('payment_detail')->get();       
             return MarketPlaceResource::collection($marketplaces);
         }
         else {
