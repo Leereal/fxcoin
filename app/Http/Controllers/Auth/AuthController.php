@@ -30,7 +30,7 @@ class AuthController extends Controller
         ], 401);
         }
         $user = $request->user();
-        if ($user->email_verified_at !== null) {
+        if ($user->status !== 0) {
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             if ($request->remember_me) {
