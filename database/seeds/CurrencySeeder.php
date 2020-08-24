@@ -13,9 +13,9 @@ class CurrencySeeder extends Seeder
     {
         $usd = App\Currency::create(['name'=>'USD','symbol'=>'US$']);
         $zar = App\Currency::create(['name'=>'ZAR','symbol'=>'R']);
-        $btc = App\Currency::create(['name'=>'BTC','symbol'=>'₿']);
-        $zwl = App\Currency::create(['name'=>'ZWL','symbol'=>'ZWL$']);
-        $gbp = App\Currency::create(['name'=>'GBP','symbol'=>'£']);
+        // $btc = App\Currency::create(['name'=>'BTC','symbol'=>'₿']);
+        // $zwl = App\Currency::create(['name'=>'ZWL','symbol'=>'ZWL$']);
+        // $gbp = App\Currency::create(['name'=>'GBP','symbol'=>'£']);
 
         // //Attaching Countries to user
         // $usd->countries()->attach(rand(1,5));
