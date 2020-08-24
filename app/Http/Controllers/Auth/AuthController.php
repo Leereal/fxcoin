@@ -30,7 +30,7 @@ class AuthController extends Controller
         ], 401);
         }
         $user = $request->user();
-        if ($user->status !== 0) {
+        if ($user->email_verified_at !=null) {
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             if ($request->remember_me) {
@@ -112,6 +112,7 @@ class AuthController extends Controller
             'cellphone'   => $request->cellphone,
             'country_id'  => $request->country_id,
             'currency_id'  => $request->currency_id,
+            'email_verified_at'  => now(),
             'ipAddress'   => request()->ip(),
             ]);
             if($request->referrer_id>0){
