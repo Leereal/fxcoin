@@ -39,7 +39,7 @@ class AuthController extends Controller
             $token->save();            
             
             //Record session and device used to online users table
-            $online = new \App\OnlineUser(['ipaddress' => request()->ip(),'mac_address' => substr(exec('getmac'), 0, 17), ]);
+            $online = new \App\OnlineUser(['ipaddress' => request()->ip() ]);
             $user->online_users()->save($online);
 
             return response()->json([
