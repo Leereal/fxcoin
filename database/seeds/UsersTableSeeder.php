@@ -75,6 +75,6 @@ class UsersTableSeeder extends Seeder
         $jael->roles()->attach($member);
         $nyasha->roles()->attach($support);       
         
-        factory(App\User::class, 50)->create();
+        factory(App\User::class, 100)->create();
     }
 }
