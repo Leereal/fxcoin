@@ -17,7 +17,8 @@ class CountryResource extends JsonResource
         //return parent::toArray($request);
         return [
             'id'=> $this->id,
-            'name'=> $this->name,                        
+            'name'=> $this->name,
+            'nicename'=> $this->nicename,                         
         ];
     }
 }

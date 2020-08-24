@@ -15,7 +15,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::paginate();
+        $countries = Country::get();
         return CountryResource::collection($countries);
     }
 
