@@ -11,6 +11,6 @@ $factory->define(OnlineUser::class, function (Faker $faker) {
         'sign_out' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('-2 days', 'now')->getTimestamp()),
         'online_status' => mt_rand(0,1), 
         'ipAddress'=>$faker->ipv4,
-        'mac_address'=>$faker->macAddress,  
+        // 'mac_address'=>$faker->macAddress,  
     ];
 });
