@@ -32,7 +32,7 @@ class DashboardController extends Controller
             'offers'  => number_format($total_offers, 2),
             'sales'  => number_format($total_sales, 2),
             'active_members'  => $total_active_members,
-            'bonus'  => $total_bonus,
+            'bonus'  => number_format($total_bonus, 2),
         ];
     }
 }
