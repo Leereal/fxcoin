@@ -100,6 +100,17 @@ class AuthController extends Controller
             'referrer_id'=> ['nullable', 'integer'],
             'terms'=> ['required']
         ]);
+
+        //Generate ShortLink using Cuttly (Email: fxauction2020@gmail.com Password: Mutabvuri$8)
+        $shortLink ="";
+        $key = "6721546ef96487e3ca1334d4cbf73489912d0";    
+        $url_cuttly = "https://cutt.ly/api/api.php";
+        $link = urlencode("https://fxauction.trade/register?ref=".$request->username);
+        $json = file_get_contents($url_cuttly."?key=$key&short=$link");
+        $data = json_decode ($json, true);
+        if($data["url"]["status"] == 7){
+            $shortLink = $data["url"]["shortLink"];
+        }       
         try {
             DB::beginTransaction();
             $user = User::create([
@@ -112,9 +123,10 @@ class AuthController extends Controller
             'cellphone'   => $request->cellphone,
             'country_id'  => $request->country_id,
             'currency_id'  => $request->currency_id,
+            'shortlink'  => $shortLink,
             'email_verified_at'  => now(),
             'ipAddress'   => request()->ip(),
-            ]);
+            ]);            
             if($request->referrer_id>0){
             $referrer = User::where('id',$request->referrer_id)->first();
             $bonus = new Bonus;
