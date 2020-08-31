@@ -105,7 +105,7 @@ class AuthController extends Controller
         $shortLink ="";
         $key = "6721546ef96487e3ca1334d4cbf73489912d0";    
         $url_cuttly = "https://cutt.ly/api/api.php";
-        $link = urlencode("https://fxauction.trade/register?ref=".$request->username);
+        $link = urlencode("https://fxauction.net/register?ref=".$request->username);
         $json = file_get_contents($url_cuttly."?key=$key&short=$link");
         $data = json_decode ($json, true);
         if($data["url"]["status"] == 7){
