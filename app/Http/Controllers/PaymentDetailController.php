@@ -43,6 +43,7 @@ class PaymentDetailController extends Controller
         $payment_detail->user_id            =   auth('api')->user()->id;         
         $payment_detail->payment_method_id  =   $request->input('payment_method_id'); 
         $payment_detail->account_number     =   $request->input('account_number');
+        $payment_detail->account_holder     =   $request->input('account_holder');
         $payment_detail->branch             =   $request->input('branch');        
         $payment_detail->ipAddress          =   request()->ip();
         if($payment_detail->save()){
