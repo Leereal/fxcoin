@@ -37,7 +37,7 @@ class UsersController extends Controller
     public function referrals()
     {
          $user = auth('api')->user()->id;
-         $referrals = User::with('country')->where( 'referrer_id',$user)->paginate();
+         $referrals = User::with('country')->where( 'referrer_id',$user)->orderByDesc('created_at')->get();
         return UserResource::collection($referrals);
         
     }
