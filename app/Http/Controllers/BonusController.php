@@ -21,7 +21,7 @@ class BonusController extends Controller
     }
     public function user_bonus()
     {
-        $bonuses = auth('api')->user()->bonuses()->active()->get();
+        $bonuses = auth('api')->user()->bonuses()->active()->orderByDesc('created_at')->get();
         return BonusResource::collection($bonuses);
     }
 
