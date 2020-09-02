@@ -21,7 +21,7 @@ class BonusController extends Controller
     }
     public function user_bonus()
     {
-        $bonuses = auth('api')->user()->bonuses()->active()->paginate();
+        $bonuses = auth('api')->user()->bonuses()->active()->get();
         return BonusResource::collection($bonuses);
     }
 

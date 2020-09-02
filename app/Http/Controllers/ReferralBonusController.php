@@ -22,7 +22,7 @@ class ReferralBonusController extends Controller
 
     public function user_referral_bonus()
     {
-        $referral_bonuses = ReferralBonus::where('user_id',auth('api')->user()->id)->paginate();
+        $referral_bonuses = ReferralBonus::where('user_id',auth('api')->user()->id)->get();
         return ReferralBonusResource::collection($referral_bonuses);
     }
 
