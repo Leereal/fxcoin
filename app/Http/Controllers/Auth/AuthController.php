@@ -136,7 +136,7 @@ class AuthController extends Controller
             $bonus->save();
             }          
 
-            $user->sendApiEmailVerificationNotification();
+            //$user->sendApiEmailVerificationNotification();
             DB::commit();
 
             $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
