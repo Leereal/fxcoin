@@ -16,7 +16,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('country','roles','referrals')->orderByDesc('created_at')->get();
+        $users = User::with('country','roles','referrals')->orderByDesc('id')->get();
         return UserResource::collection($users);
     }  
 
