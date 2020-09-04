@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentDetailResource extends JsonResource
 {
@@ -25,8 +26,9 @@ class PaymentDetailResource extends JsonResource
             'surname'=> $this->user->surname,           
             'payment_method'=> $this->payment_method->name, 
             'currency'=> $this->payment_method->currency->name, 
-            // 'payment_method_avatar'=> url('/')."/images/".$this->payment_method->avatar,     
-            'payment_method_avatar'=>asset('images/'.$this->payment_method->avatar)         
+             // 'payment_method_avatar'=> url('/')."/images/".$this->payment_method->avatar,     
+             'payment_method_avatar'=>asset('images/'.$this->payment_method->avatar) 
+         
         ];
     }
 }

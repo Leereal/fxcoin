@@ -21,7 +21,7 @@ class SettingsController extends Controller
 
     public function close_market_place()
     {
-        return Settings::findOrFail(1)->update(['status' => 0]);
+        return Settings::findOrFail(1)->update(['market_place_status' => 0]);
     }  
 
     public function mature_investments()

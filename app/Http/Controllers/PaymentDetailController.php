@@ -63,13 +63,14 @@ class PaymentDetailController extends Controller
     {
         //Validate input values
         $request->validate([  
-            'account_number'    => 'required|max:255',
-            'ipAddress'         => 'required|ip',
+            'account_number'    => 'required|max:255',           
         ]);
 
         $payment_detail                 = PaymentDetail::findOrFail($request->id);
         $payment_detail->id             = $request->input('id');       
-        $payment_detail->account_number = $request->input('account_number');       
+        $payment_detail->account_number = $request->input('account_number');
+        $payment_detail->account_holder     =   $request->input('account_holder');
+        $payment_detail->branch             =   $request->input('branch');      
         $payment_detail->ipAddress      = request()->ip();
         if($payment_detail->save()){
             return new PaymentDetailResource($payment_detail);

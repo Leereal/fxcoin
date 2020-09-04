@@ -21,3 +21,6 @@ User::whereMonth('created_at', date('m'));
 User::whereYear('created_at', date('Y'));
 
 $localTime = $object->created_at->timezone($this->auth->user()->timezone);
+
+//Create symbolic link for public images folder
+ln -s storage/images public/images
