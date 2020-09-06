@@ -48,10 +48,8 @@ class InvestmentController extends Controller
         ]);
 
         $user = auth('api')->user();
-        $referrer   = User::find($user->id)->referrer_id;
-
-        //Get pending order with posted id
-        //$pending_payment = PendingPayment::where('id', $request->input('id'))->first();
+        //Get referrer or upliner
+        $referrer = $user->referrer()->with('currency')->first();   
 
         //Get package of the  pending order
         $package    = Packages::findOrFail($request->input('package_id'));
@@ -86,11 +84,24 @@ class InvestmentController extends Controller
                 $investment->status                  = 2;
                 $investment->save();
                 
-                if ($referrer>0 && $referrer != $user->id) {
+                if ($referrer->id >0 && $referrer->id != $user->id) {
                     //Add bonus
                     $referral_bonus                      = new ReferralBonus;
-                    $referral_bonus->user_id             = $referrer;
-                    $referral_bonus->amount              = $amount*0.1;
+                    $referral_bonus->user_id             = $referrer->id;
+
+                    //Calculate referral bonus according to referrer currency
+                    $bonus_amount =0;
+                    if($referrer->currency->name == $user->currency->name){
+                        $bonus_amount=$amount*0.1;
+                    };
+                    if($referrer->currency->name == 'USD' && $user->currency->name == 'ZAR'){
+                        $bonus_amount=$amount*0.1/18; // Use $1 = R18 as the rate
+                    };
+                    if($referrer->currency->name == 'ZAR' && $user->currency->name == 'USD'){
+                        $bonus_amount=$amount*0.1*16; // Use $1 = R18 as the rate
+                    };
+
+                    $referral_bonus->amount              = $bonus_amount;
                     $investment->referral_bonus()->save($referral_bonus);
                 }
                 DB::commit();

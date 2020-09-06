@@ -188,9 +188,15 @@ class PendingPaymentController extends Controller
         //Get package of the  pending order
         $package    = Packages::findOrFail($pending_payment->package_id);
 
-        //Check if user was referred
-        $referrer   = User::findOrFail($pending_payment->user_id)->referrer_id;
-        
+        //Get receiver details
+        $receiver = User::where('id',$pending_payment->user_id)->with('currency','referrer')->first();
+
+        // //Get referrer or upliner of the receiver
+        // $referrer = User::where('id',$pending_payment->user_id)->with('currency')->first();
+
+        // //Check if user was referred
+        // $referrer   = User::find($pending_payment->user_id)->referrer_id;
+
         $amount = $pending_payment->amount;
         $expected_profit = $amount + ($package->interest /100 * $amount);
         $balance = $expected_profit;
@@ -207,11 +213,24 @@ class PendingPaymentController extends Controller
                 $investment->balance+=$balance;
                 $investment->save();
 
-                if ($referrer>0) {
+                if ($receiver->referrer->id >0) {
                     //Add bonus
                     $referral_bonus                      = new ReferralBonus;
-                    $referral_bonus->user_id             = $referrer;
-                    $referral_bonus->amount              = $pending_payment->amount*0.1;
+                    $referral_bonus->user_id             = $receiver->referrer->id;
+
+                    //Calculate referral bonus according to referrer currency
+                    $bonus_amount =0;
+                    if($receiver->referrer->currency->name == $receiver->currency->name){
+                        $bonus_amount=$pending_payment->amount*0.1;
+                    };
+                    if($receiver->referrer->currency->name == 'USD' && $receiver->currency->name == 'ZAR'){
+                        $bonus_amount=$pending_payment->amount*0.1/18; // Use $1 = R18 as the rate
+                    };
+                    if($receiver->referrer->currency->name == 'ZAR' && $receiver->currency->name == 'USD'){
+                        $bonus_amount=$pending_payment->amount*0.1*16; // Use $1 = R18 as the rate
+                    };
+
+                    $referral_bonus->amount              = $bonus_amount;
                     $investment->referral_bonus()->save($referral_bonus);
                 }
                 $approve_payment         = PendingPayment::findOrFail($request->id)->update(['status' => 0]);
@@ -240,11 +259,24 @@ class PendingPaymentController extends Controller
                 $investment->balance                 = $balance;
                 $investment->save();
                 
-                if ($referrer>0) {
+                if ($receiver->referrer->id >0) {
                     //Add bonus
                     $referral_bonus                      = new ReferralBonus;
-                    $referral_bonus->user_id             = $referrer;
-                    $referral_bonus->amount              = $request->input('amount')*0.1;
+                    $referral_bonus->user_id             = $receiver->referrer->id;
+
+                    //Calculate referral bonus according to referrer currency
+                    $bonus_amount =0;
+                    if($receiver->referrer->currency->name == $receiver->currency->name){
+                        $bonus_amount=$pending_payment->amount*0.1;
+                    };
+                    if($receiver->referrer->currency->name == 'USD' && $receiver->currency->name == 'ZAR'){
+                        $bonus_amount=$pending_payment->amount*0.1/18; // Use $1 = R18 as the rate
+                    };
+                    if($receiver->referrer->currency->name == 'ZAR' && $receiver->currency->name == 'USD'){
+                        $bonus_amount=$pending_payment->amount*0.1*16; // Use $1 = R18 as the rate
+                    };
+
+                    $referral_bonus->amount              = $bonus_amount;
                     $investment->referral_bonus()->save($referral_bonus);
                 }
                 $approve_payment = PendingPayment::findOrFail($request->id)->update(['status' => 0]);

@@ -24,3 +24,13 @@ $localTime = $object->created_at->timezone($this->auth->user()->timezone);
 
 //Create symbolic link for public images folder
 ln -s storage/images public/images
+
+//Email config
+MAIL_MAILER=smtp  
+MAIL_HOST=199.192.25.181  
+MAIL_PORT=587  
+MAIL_USERNAME=noreply@fxauction.trade
+MAIL_PASSWORD=***********
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@fxauction.trade
+MAIL_FROM_NAME="${APP_NAME}"
