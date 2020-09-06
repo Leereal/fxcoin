@@ -1,19 +1,29 @@
 <?php
 
 namespace App\Http\Controllers\Auth\Api;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailableForgotPassword;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
-    public function forgot() {
+    public function forgot(Request $request) {
         $credentials = request()->validate(['email' => 'required|email']);
-
-        Password::sendResetLink($credentials);
-
-        return response()->json(["msg" => 'Reset password link sent on your email id.']);
+        $newpass = Str::random(10);
+        $check = User::where('email', $request->email)->exists();
+            if($check) {
+                $usrid =  User::where('email', $request->email)->value('id');     
+                $user_details = User::find($usrid);  
+                $pg_email = (object) array("name"=>$user_details->name,"surname"=>$user_details->surname,"password"=>$newpass,"username"=>$request->email);
+                $user_details->password = bcrypt($newpass);
+                $user_details->save();
+                Mail::to($request->email)->send(new SendMailableForgotPassword($pg_email));
+            } 
+        return response()->json(["msg" => 'Password reset successfully. Please check your email.']);
     }
     public function reset(Request $request) {
         $credentials = request()->validate([            
