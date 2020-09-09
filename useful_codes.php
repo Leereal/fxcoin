@@ -45,6 +45,6 @@ public function boot()
 
 whereHas('users', function (Builder $query){$query->where('currency_id', $user->currency_id);});
 
-php artisan db:seed --class=PackagesSeeder
+php artisan db:seed --class=PaymentMethodSeeder
 
 Password: 02EOrAgv7eM13kLRn4

@@ -36,7 +36,7 @@ Route::get('/country', 'CountryController@index');
 
 Route::apiResource('/currency', 'CurrencyController');
 
-Route::middleware('auth:api')->group(function () {
+// Route::middleware('auth:api')->group(function () {
 
     Route::post('/change-password', 'Auth\AuthController@change_password');
 
@@ -111,4 +111,4 @@ Route::middleware('auth:api')->group(function () {
 
     //Routes forbonus
     Route::get('/user-bonus', 'BonusController@user_bonus');
-});
+// });
