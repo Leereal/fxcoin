@@ -34,3 +34,17 @@ MAIL_PASSWORD=mutabvuri$8
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=noreply@fxauction.trade
 MAIL_FROM_NAME="${APP_NAME}"
+
+
+//Set Timezone
+//AppServicesProvider
+public function boot()
+{
+    date_default_timezone_set('Africa/Lagos');
+}
+
+whereHas('users', function (Builder $query){$query->where('currency_id', $user->currency_id);});
+
+php artisan db:seed --class=PackagesSeeder
+
+Password: 02EOrAgv7eM13kLRn4

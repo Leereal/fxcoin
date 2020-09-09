@@ -21,6 +21,7 @@ class MarketPlaceResource extends JsonResource
             'id'=> $this->id,
             'amount'=> $this->amount, 
             'balance'=> $this->balance, 
+            'created_at'=> $this->created_at, 
             'transaction_code'=> $this->transaction_code,
             'payment_method'=> $this->payment_detail->payment_method->name ?? '',  
             'payment_method_avatar'=> url('/')."/images/".$this->payment_detail->payment_method->avatar ?? '',

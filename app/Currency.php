@@ -14,7 +14,8 @@ class Currency extends Model
         return $this->hasMany('App\Country');
     }
 
-    public function payment_methods(){
+    public function payment_methods()
+    {
         return $this->hasMany('App\PaymentMethod');
     }
 
@@ -29,6 +30,4 @@ class Currency extends Model
     {
         return $query->where('status', 1);
     }
-
-    
 }

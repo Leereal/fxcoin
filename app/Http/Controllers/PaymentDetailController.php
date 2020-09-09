@@ -44,7 +44,8 @@ class PaymentDetailController extends Controller
         $payment_detail->payment_method_id  =   $request->input('payment_method_id'); 
         $payment_detail->account_number     =   $request->input('account_number');
         $payment_detail->account_holder     =   $request->input('account_holder');
-        $payment_detail->branch             =   $request->input('branch');        
+        $payment_detail->branch             =   $request->input('branch');    
+        $payment_detail->account_type       =   $request->input('account_type');      
         $payment_detail->ipAddress          =   request()->ip();
         if($payment_detail->save()){
             return new PaymentDetailResource($payment_detail);
@@ -70,7 +71,8 @@ class PaymentDetailController extends Controller
         $payment_detail->id             = $request->input('id');       
         $payment_detail->account_number = $request->input('account_number');
         $payment_detail->account_holder     =   $request->input('account_holder');
-        $payment_detail->branch             =   $request->input('branch');      
+        $payment_detail->branch             =   $request->input('branch');  
+        $payment_detail->account_type       =   $request->input('account_type');     
         $payment_detail->ipAddress      = request()->ip();
         if($payment_detail->save()){
             return new PaymentDetailResource($payment_detail);

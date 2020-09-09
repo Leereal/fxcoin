@@ -36,7 +36,7 @@ class PaymentMethodSeeder extends Seeder
         App\PaymentMethod::create(['name'=>'FIRST CAPITAL (BOTSWANA)','avatar'=>'first_capital.png','currency_id'=>'2']);
         App\PaymentMethod::create(['name'=>'FNB (BOTSWANA)','avatar'=>'fnb.png','currency_id'=>'2']);
         App\PaymentMethod::create(['name'=>'STANBIC (BOTSWANA)','avatar'=>'stanbic.png','currency_id'=>'2']);
-        App\PaymentMethod::create(['name'=>'STANDARD (BOTSWANA)','avatar'=>'standard_bank.png','currency_id'=>'2']);
+        App\PaymentMethod::create(['name'=>'STANDARD (BOTSWANA)','avatar'=>'standard_bank.png','currency_id'=>'2']);        
         App\PaymentMethod::create(['name'=>'NEDBANK (NAMIBIA)','avatar'=>'nedbank.png','currency_id'=>'2']);
         App\PaymentMethod::create(['name'=>'STANDARD (NAMIBIA)','avatar'=>'standard_bank.png','currency_id'=>'2']);
         App\PaymentMethod::create(['name'=>'TRUSTCO (NAMIBIA)','avatar'=>'trustco.png','currency_id'=>'2']);
@@ -50,6 +50,7 @@ class PaymentMethodSeeder extends Seeder
         App\PaymentMethod::create(['name'=>'NEDBANK (LESOTHO)','avatar'=>'nedbank.png','currency_id'=>'2']);
         App\PaymentMethod::create(['name'=>'FNB (LESOTHO)','avatar'=>'fnb.png','currency_id'=>'2']);
         App\PaymentMethod::create(['name'=>'MPESA (LESOTHO)','avatar'=>'mpesa.png','currency_id'=>'2']);
+        App\PaymentMethod::create(['name'=>'FNB (NAMIBIA)','avatar'=>'fnb.png','currency_id'=>'2']);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
