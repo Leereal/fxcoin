@@ -224,8 +224,33 @@ class PendingPaymentController extends Controller
             $make_payment->comment   = $request->input('comment');
             $make_payment->pop       = $name;
             $make_payment->status    = 101;
+
+          
             if ($make_payment->save()) {
-                return ['message' => 'Saved Successfully'];
+                  //find user id
+                  $credentials = "mufaroprogrammer@gmail.com :87daa0eb-bbf8-4ba3-b8bd-6cb68b4c0692";
+                  $url = "https://www.zoomconnect.com/app/api/rest/v1/sms/send.json";
+                  $to_id = MarketPlace::find($make_payment->market_place_id)->user_id;
+                  $cell = User::find($to_id)->cellphone;
+                  $name = User::find($to_id)->name;
+                  $message = "Hie " . $name . ". You have new proof of payment to approve. Login now and approve: https://fxauction.net/login. FXAuction Team ";
+                  $data = [
+                    'message'=> $message,
+                    'recipientNumber'=> $cell,
+                  ];
+                  $data_string = json_encode($data);
+
+                  file_get_contents($url, null, stream_context_create(array(
+                      'http' => array(
+                          'method'           => 'POST',
+                          'header'           => "Content-type: application/json\r\n".
+                                                "Connection: close\r\n" .
+                                                "Content-length: " . strlen($data_string) . "\r\n" .
+                                                "Authorization: Basic " . base64_encode($credentials) . "\r\n",
+                          'content'          => $data_string,
+                      ),
+                  )));
+                  return ['message' => 'Saved Successfully'];
             }
         }
     }
