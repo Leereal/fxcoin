@@ -9,6 +9,7 @@ use App\Http\Resources\MarketPlaceResource;
 use DB;
 use App\Investment;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
 
 class MarketPlaceController extends Controller
@@ -20,24 +21,30 @@ class MarketPlaceController extends Controller
     */
 
     public function index()
-    {
-        $settings = Settings::where('id', 1)->first();  
+    {   
+        $settings = Settings::where('id', 1)->first(); //Check if market place is allowed to open in settings 
         if ($settings->market_place_status > 0) {
-            $marketplaces = MarketPlace::where('status', '1')->with('payment_detail')->get();       
-            return MarketPlaceResource::collection($marketplaces);
+            //View all sells in Market with same currency as the logged user
+            $marketplaces = MarketPlace::whereHas('user', function (Builder $query){
+                $query->where('currency_id', auth('api')->user()->currency_id);
+                $query->where('user_id','<>' , auth('api')->user()->currency_id);
+            })
+            ->with('payment_detail')->active()->paginate(8);
+
+            if($marketplaces->isEmpty()){
+                return ['status' => 'Finished'];              
+            }
+            return MarketPlaceResource::collection($marketplaces);       
+            
         }
         else {
-            $rdata= array(
-                'status' => 'error',
-                'message' => 'Market is currently closed. Please wait for the market to open'
-            );
-            return response()->json($rdata, 403);
+            return ['status' => 'Closed'];
         }
     }
 
     public function user_pending_payments()
     {
-        $market_places = MarketPlace::where('user_id', auth('api')->id)->with('pending_payments')->paginate();
+        $market_places = MarketPlace::where('user_id', auth('api')->id)->with('pending_payments')->get();
         return MarketPlace::collection($market_places);
     }
 

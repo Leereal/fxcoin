@@ -20,6 +20,7 @@ class PaymentDetailResource extends JsonResource
             'id'=> $this->id,
             'branch'=> $this->branch, 
             'account_number'=> $this->account_number, 
+            'account_type'=> $this->account_type, 
             'account_holder'=> $this->account_holder, 
             'ipAddress'=> $this->ipAddress,  
             'first_name'=> $this->user->name,
