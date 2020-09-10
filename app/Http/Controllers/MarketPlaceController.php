@@ -31,21 +31,14 @@ class MarketPlaceController extends Controller
             })
             ->with('payment_detail')->active()->paginate(8);
 
-            if(!$marketplaces){
-                $rdata= array(
-                    'status' => 'error',
-                    'message' => 'No more points available for sale. Please wait for the Market to open again'
-                );
-                return response()->json($rdata, 403);
-            }       
-            return MarketPlaceResource::collection($marketplaces);
+            if($marketplaces->isEmpty()){
+                return ['status' => 'Finished'];              
+            }
+            return MarketPlaceResource::collection($marketplaces);       
+            
         }
         else {
-            $rdata= array(
-                'status' => 'error',
-                'message' => 'Market is currently closed. Please wait for the market to open. You can also buy points directly from the system and get high interest, this increase FXAuction equity for trading Forex and Binary Options which generates profits for the benefit of every member of this platform. REMEMBER WE MAKE OUR PROFITS FROM TRADING MONEY DEPOSITED VIA POOL OPTIONS TO SUPPORT THE SYSTEM'
-            );
-            return response()->json($rdata, 403);
+            return ['status' => 'Closed'];
         }
     }
 

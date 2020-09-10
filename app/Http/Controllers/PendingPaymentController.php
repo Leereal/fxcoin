@@ -14,8 +14,6 @@ use App\PendingPayment;
 use App\ReferralBonus;
 use App\Investment;
 use App\MarketPlace;
-use App\Settings;
-
 
 use App\Http\Resources\InvestmentResource;
 use App\Http\Resources\MarketPlaceResource;
@@ -58,10 +56,20 @@ class PendingPaymentController extends Controller
             'package_id'          => 'required|integer',
             'comment'             => 'max:1000|nullable',
         ]);
-        $user = auth('api')->user();
-        $settings = Settings::where('id', 1)->first();
+        $user = auth('api')->user();      
         $min_amount = $user->currency->name == 'ZAR' ? 150 : 10;
-        $max_amount = $user->currency->name == 'ZAR' ? 16000 : 1000;
+        $max_amount = $user->currency->name == 'ZAR' ? 16000 : 3000;
+        
+        $market_place_balance = MarketPlace::where('id',$request->market_place_id)->first()->balance;
+
+        if($market_place_balance < $request->amount)
+        {
+            $rdata = array(
+                'status' => 'error',
+                'message' => 'Sorry you are late. Someone offered to pay this already'
+            );
+            return response()->json($rdata, 404);
+        }
 
         //Get current users offers older than today
         $user_previous_unpaid_offers = $user->offers()->whereDate('created_at', '<', Carbon::today())->whereIn('status', [2, 101])->get()->count();
@@ -98,7 +106,7 @@ class PendingPaymentController extends Controller
                 return response()->json($rdata, 500);
             }
             // //Check if remaining amount can be placed on market place again
-            if (($request->input('balance') - $request->input('amount') < $min_amount)) {
+            if (($market_place_balance- $request->input('amount') < $min_amount) && ($market_place_balance - $request->input('amount') != 0) ) {
                 $rdata = array(
                     'status' => 'error',
                     'message' => 'You are recommended to take all the amount because remaining balance will be less than  ' . $min_amount
@@ -120,7 +128,7 @@ class PendingPaymentController extends Controller
                     $pending_payment->save();
 
                     $amount = $request->input('amount');
-                    $balance = $request->input('balance');
+                    $balance = MarketPlace::where('id',$request->market_place_id)->first()->balance;
                     //Get market place and then reduce its value by amount offered by current user
                     $market_place = MarketPlace::findOrFail($request->input('market_place_id'));
                     if ($amount == $balance) {
@@ -299,7 +307,7 @@ class PendingPaymentController extends Controller
                 $investment->comments                = "Paid from the approval by " . auth('api')->user()->username;
                 $investment->due_date                = Carbon::now()->addDays($package->period);
                 $investment->payment_method_id       = $pending_payment->payment_method_id;
-                $investment->currency_id             = 1; //From settings table;
+                $investment->currency_id             = $receiver->currency_id;
                 $investment->ipAddress               = request()->ip();
                 $investment->expected_profit         = $expected_profit;
                 $investment->balance                 = $balance;

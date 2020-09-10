@@ -123,8 +123,7 @@ class AuthController extends Controller
             'cellphone'   => $request->cellphone,
             'country_id'  => $request->country_id,
             'currency_id'  => $request->currency_id,
-            'shortlink'  => $shortLink,
-            'email_verified_at'  => now(),
+            'shortlink'  => $shortLink,  
             'ipAddress'   => request()->ip(),
             ]);            
             if($request->referrer_id>0){
@@ -136,7 +135,7 @@ class AuthController extends Controller
             $bonus->save();
             }          
 
-            //$user->sendApiEmailVerificationNotification();
+            $user->sendApiEmailVerificationNotification();
             DB::commit();
 
             $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
