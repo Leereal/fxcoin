@@ -75,6 +75,7 @@ Route::apiResource('/currency', 'CurrencyController');
 
     //Routes for offers
     Route::get('/offers', 'PendingPaymentController@offers');
+    Route::get('/all-offers', 'PendingPaymentController@alloffers');
     Route::post('/make-payment', 'PendingPaymentController@make_payment');
     Route::post('/approve-payment', 'PendingPaymentController@approve_payment');
 

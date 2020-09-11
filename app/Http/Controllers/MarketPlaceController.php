@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\MarketPlace;
-use App\Settings;
 use Illuminate\Http\Request;
 use App\Http\Resources\MarketPlaceResource;
 use DB;
 use App\Investment;
+use App\Settings;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
@@ -70,26 +70,53 @@ class MarketPlaceController extends Controller
             'reason'            => 'required|string|max:255',
             'payment_detail_id' => 'required|integer',
             'investment_id'     => 'required|integer',
-            'due_date'          => 'required',
             'comment'           => 'max:1000|nullable',
         ]);
-        //------------Start transaction------------------//
-        $balance = $request->input('balance');
-        $amount  = $request->input('amount');
-        $due_date  = $request->input('due_date');
 
-        $settings = Settings::where('id', 1)->first();
-        $min_amount = $settings->min_withdrawal;
-        $max_amount = $settings->max_withdrawal;
+        //Take balance from investments
+        $investment     = Investment::where('id',$request->investment_id)->first();
+        $balance        = $investment->balance;
+        $due_date       = $investment->due_date;
 
+        //------------Start transaction------------------// 
+        $amount  = $request->input('amount'); 
+        
+        //Daily Minimum and Maximum withdrawal
+        $user = auth('api')->user();    
+        $min_amount = $user->currency->name == 'ZAR' ? 150 : 10;
+        $max_amount = $user->currency->name == 'ZAR' ? 32000 : 2000;
 
+        //Get current users points in market place
+        $user_market_place_balance = $user->market_places()->where('status','<>', 100)->get()->sum('balance');
+
+        //Checking if amount is less than available balance, amount is not zero, investment mature, transaction limit not exceeded or below
         if (($amount <= $balance) && ($amount!=0) && ($due_date < now()) && ($min_amount <= $amount) && ($max_amount >= $amount)) {
-            $investment_balance = $balance-$amount;
+            $investment_balance = $balance-$amount;//Calculating balance to remain
+
+            //Check if user has not exceeded maximum required in market place
+            if (($user_market_place_balance + $amount) > $max_amount) {
+                $rdata = array(
+                    'status' => 'error',
+                    'message' => 'Limit Reached.  You still have '.$user_market_place_balance.' on Market.'
+                );
+                return response()->json($rdata, 405);
+            }
+            // //Check if remaining balance can be placed on market place again
+            if (($investment_balance < $min_amount) && ($investment_balance != 0) ) {
+                $rdata = array(
+                    'status' => 'error',
+                    'message' => 'You are recommended to take all the amount because remaining balance will be less than  ' . $min_amount
+                );
+                return response()->json($rdata, 405);
+            }
+
+            //Setting statuses to update investment
             if ($amount == $balance) {
                 $status = 0;
             } else {
                 $status = 1;
             }
+
             try {
                 DB::beginTransaction();
                 $market_place                          = new MarketPlace;
@@ -122,7 +149,7 @@ class MarketPlaceController extends Controller
                 'status' => 'error',
                 'message' => 'Check if amount is between allowed minimum and maximum daily limit and also if it is above balance'
             );
-            return response()->json($rdata, 500);
+            return response()->json($rdata, 405);
         }
     }
 
