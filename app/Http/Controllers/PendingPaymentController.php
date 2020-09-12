@@ -31,7 +31,7 @@ class PendingPaymentController extends Controller
      */
     public function index()
     {
-        $pending_payments = PendingPayment::paginate();
+        $pending_payments = PendingPayment::latest()->get();
         return PendingPaymentResource::collection($pending_payments);
     }
 

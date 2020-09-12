@@ -73,6 +73,9 @@ Route::apiResource('/currency', 'CurrencyController');
     //Routes for payment details
     Route::get('/investments', 'InvestmentController@investments');
 
+    //Routes for user withdrawals
+    Route::get('/withdrawals', 'WithdrawalController@user_withdrawals');
+
     //Routes for offers
     Route::get('/offers', 'PendingPaymentController@offers');
     Route::get('/all-offers', 'PendingPaymentController@alloffers');

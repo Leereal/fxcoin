@@ -23,6 +23,7 @@ class PendingPaymentResource extends JsonResource
             'placed_by'=> $this->market_place->user->name." ".$this->market_place->user->surname ,
             'cellphone'=> $this->market_place->user->cellphone,
             'account_to_pay'=> $this->market_place->payment_detail->account_number,
+            'currency'=> $this->market_place->user->currency->symbol,
             'account_holder'=> $this->market_place->payment_detail->account_holder,
             'account_type'=> $this->market_place->payment_detail->account_type,
             'branch'=> $this->market_place->payment_detail->branch,

@@ -24,6 +24,7 @@ class InvestmentResource extends JsonResource
             'payment_method'=> $this->payment_method->name,  
             'expected_profit'=> $this->expected_profit,
             'package'=> $this->package->name,
+            'category'=> $this->package->category,
             'due_date'=> $this->due_date,
             'pop'=> $this->pop,            
             'firstname'=> $this->user->name,

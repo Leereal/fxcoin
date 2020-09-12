@@ -23,7 +23,7 @@ class CreateWithdrawalsTable extends Migration
             $table->unsignedBigInteger('investment_id');
             $table->unsignedBigInteger('user_id');
             $table->text('comments')->nullable();            
-            $table->integer('status')->default(1);
+            $table->integer('status')->default(2);
             $table->ipAddress('ipAddress');
             $table->softDeletes();   
 

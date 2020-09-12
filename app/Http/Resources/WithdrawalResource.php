@@ -17,15 +17,17 @@ class WithdrawalResource extends JsonResource
         //return parent::toArray($request);
         return [
             'id'=> $this->id,
+            'created'=> $this->created_at, 
             'amount'=> $this->amount, 
             'transaction_code'=> $this->transaction_code,
             'payment_method'=> $this->payment_detail->payment_method->name,  
             'account_number'=> $this->payment_detail->account_number,
             'reason'=> $this->reason,
             'firstname'=> $this->user->name,
-            //'surname'=> $this->user->surname,
+            'surname'=> $this->user->surname,
             'comments'=> $this->comments,
-            'ipAddress'=> $this->ipAddress,                    
+            'ipAddress'=> $this->ipAddress,   
+            'status'=> $this->status,                 
         ];
     }
 }
