@@ -29,7 +29,7 @@ class MarketPlaceController extends Controller
                 $query->where('currency_id', auth('api')->user()->currency_id);
                 $query->where('user_id','<>' , auth('api')->user()->currency_id);
             })
-            ->with('payment_detail')->active()->paginate(8);
+            ->with('payment_detail')->active()->orderByRaw('RAND()')->paginate(8);
 
             if($marketplaces->isEmpty()){
                 return ['status' => 'Finished'];              
