@@ -22,7 +22,7 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        $investments = Investment::with('package', 'referral_bonus', 'user', 'payment_method')->active()->orderBy('id', 'desc')->paginate();
+        $investments = Investment::with('package', 'referral_bonus', 'user', 'payment_method')->latest()->get();
         return InvestmentResource::collection($investments);
     }
 
