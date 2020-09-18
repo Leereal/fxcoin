@@ -101,6 +101,8 @@ Route::apiResource('/currency', 'CurrencyController');
 
     //Referral Bonuses Routes
     Route::get('/user-referral-bonus', 'ReferralBonusController@user_referral_bonus');
+    Route::post('/bonus-withdrawal', 'ReferralBonusController@withdrawal');
+    Route::get('/available-bonus', 'ReferralBonusController@bonus');
 
     //Dashboard Routes
     Route::get('/dashboard', 'DashboardController@dashboard');

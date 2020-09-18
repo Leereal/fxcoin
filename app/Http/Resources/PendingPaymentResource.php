@@ -35,7 +35,7 @@ class PendingPaymentResource extends JsonResource
             'comment'=> $this->comment,
             'ipAddress'=> $this->ipAddress,
             'payment_method'=> $this->payment_method->name, 
-            'payment_method_avatar'=>$this->payment_method->avatar, 
+            'payment_method_avatar'=>url('/')."/images/".$this->payment_method->avatar ?? '', 
             'package'=> $this->package->name,      
             'status'=> $this->status, 
             'pop'=> url('/')."/images/".$this->pop,                
