@@ -210,10 +210,13 @@ class PendingPaymentController extends Controller
     public function alloffers()
     {
         $user = auth('api')->user();
-        $offers = $user->offers()->where('status', '=', '101')->get();
+        if($user->id == 1){
+            $offers = $user->offers()->where('status', '=', '101')->get();
 
         //Return single pending_payment as a resource
         return PendingPaymentResource::collection($offers);
+        }
+        
     }
 
     public function make_payment(Request $request)
