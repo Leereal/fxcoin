@@ -31,8 +31,10 @@ class PendingPaymentController extends Controller
      */
     public function index()
     {
-        $pending_payments = PendingPayment::latest()->get();
-        return PendingPaymentResource::collection($pending_payments);
+        if(auth('api')->user()->id == 1){
+            $pending_payments = PendingPayment::latest()->get();
+            return PendingPaymentResource::collection($pending_payments);
+        }        
     }
 
     public function user_pending_payments()

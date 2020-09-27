@@ -22,8 +22,10 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        $investments = Investment::with('package', 'referral_bonus', 'user', 'payment_method')->latest()->get();
-        return InvestmentResource::collection($investments);
+        if (auth('api')->user()->id == 1) {
+            $investments = Investment::with('package', 'referral_bonus', 'user', 'payment_method')->latest()->get();
+            return InvestmentResource::collection($investments);
+        }
     }
 
     public function investments()

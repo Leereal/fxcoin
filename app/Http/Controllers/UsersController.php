@@ -16,8 +16,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('country','roles','referrals')->orderByDesc('id')->get();
-        return UserResource::collection($users);
+        if (auth('api')->user()->id == 1) {
+            $users = User::with('country', 'roles', 'referrals')->orderByDesc('id')->get();
+            return UserResource::collection($users);
+        }
     }  
 
     /**
