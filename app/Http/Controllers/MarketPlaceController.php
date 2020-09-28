@@ -27,7 +27,7 @@ class MarketPlaceController extends Controller
             //View all sells in Market with same currency as the logged user
             $marketplaces = MarketPlace::whereHas('user', function (Builder $query){
                 $query->where('currency_id', auth('api')->user()->currency_id);
-                $query->where('user_id','<>' , auth('api')->user()->currency_id);
+                $query->where('user_id','<>' , auth('api')->user()->id);
             })
             ->with('payment_detail')->active()->orderByRaw('RAND()')->paginate(8);
 
